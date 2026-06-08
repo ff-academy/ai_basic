@@ -72,48 +72,68 @@
     font-weight: 300;
   }
 
-  /* ── 목차 ── */
-  .toc {
-    background: var(--navy-dim);
-    border-left: 3px solid var(--navy);
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 3rem;
-    border-radius: 0 6px 6px 0;
+  /* ── 목차 네비바 ── */
+  html { scroll-behavior: smooth; }
+
+  .toc-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(249,247,242,0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.55rem 2rem;
+    margin: 0 -2rem 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
-  .toc-title {
-    font-size: 0.7rem;
+  .toc-bar::-webkit-scrollbar { display: none; }
+
+  .toc-bar-label {
+    font-size: 0.62rem;
     font-weight: 600;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--navy);
-    margin-bottom: 0.6rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    margin-right: 0.4rem;
+    flex-shrink: 0;
   }
 
-  .toc-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .toc-list li a {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    text-decoration: none;
-    display: flex;
+  .toc-btn {
+    display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    transition: color 0.15s;
-  }
-
-  .toc-list li a:hover { color: var(--navy); }
-
-  .toc-num {
-    font-size: 0.7rem;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    background: transparent;
+    font-family: var(--sans);
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--text-muted);
-    min-width: 18px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.18s;
+    text-decoration: none;
+  }
+
+  .toc-btn:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+    background: var(--navy-dim);
+  }
+
+  .toc-btn.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: #fff;
   }
 
   /* ── 섹션 ── */
@@ -587,17 +607,15 @@
   </div>
 
   <!-- 목차 -->
-  <nav class="toc">
-    <div class="toc-title">목차</div>
-    <ul class="toc-list">
-      <li><a href="#s1"><span class="toc-num">01</span> AI란 무엇인가?</a></li>
-      <li><a href="#s2"><span class="toc-num">02</span> LLM AI란 무엇인가?</a></li>
-      <li><a href="#s3"><span class="toc-num">03</span> 대화형 AI 종류 비교</a></li>
-      <li><a href="#s4"><span class="toc-num">04</span> 프롬프트란 무엇인가?</a></li>
-      <li><a href="#s5"><span class="toc-num">05</span> 프롬프트의 4요소</a></li>
-      <li><a href="#s6"><span class="toc-num">06</span> 좋은 프롬프트 vs 나쁜 프롬프트</a></li>
-      <li><a href="#s7"><span class="toc-num">07</span> Gemini로 프롬프트 공부하는 질문 리스트</a></li>
-    </ul>
+  <nav class="toc-bar" id="toc-bar">
+    <span class="toc-bar-label">Section</span>
+    <a class="toc-btn" id="btn-s1" href="#s1" title="AI란 무엇인가?">01</a>
+    <a class="toc-btn" id="btn-s2" href="#s2" title="LLM AI란? — 확률적 답변과 할루시네이션">02</a>
+    <a class="toc-btn" id="btn-s3" href="#s3" title="대화형 AI 종류 비교">03</a>
+    <a class="toc-btn" id="btn-s4" href="#s4" title="프롬프트란 무엇인가?">04</a>
+    <a class="toc-btn" id="btn-s5" href="#s5" title="프롬프트의 4요소">05</a>
+    <a class="toc-btn" id="btn-s6" href="#s6" title="좋은 vs 나쁜 프롬프트">06</a>
+    <a class="toc-btn" id="btn-s7" href="#s7" title="Gemini 질문 리스트">07</a>
   </nav>
 
   <!-- 01 AI란 -->
@@ -633,19 +651,60 @@
     <h3>① 엄청난 양의 글을 공부했어요</h3>
     <p class="body-text">인터넷에 있는 뉴스, 책, 논문, 블로그, 위키피디아 등 수천억 개의 문장을 학습했어요. 사람이 평생 읽어도 다 못 읽을 양이에요. 덕분에 거의 모든 주제에 대해 그럴듯한 답변을 만들어낼 수 있어요.</p>
 
-    <h3>② "다음 단어"를 예측하는 방식으로 작동해요</h3>
+    <h3>② AI의 답변은 "확률"로 작동해요</h3>
 
     <div class="analogy">
       <div class="analogy-label">🎲 비유로 이해하기 — 확률 게임</div>
       <p>LLM은 사실을 "기억"하는 게 아니라 <strong>"이 다음엔 어떤 단어가 올 확률이 높은가"</strong>를 계산해요. "오늘 날씨가 ___" 다음에 올 말은 "맑다"일 확률이 높겠죠? 이런 방식으로 문장 전체를 완성해나갑니다. 아주 정교한 '단어 맞추기 게임'이라고 생각하면 쉬워요.</p>
     </div>
 
-    <h3>③ 그래서 같은 질문도 매번 답이 달라질 수 있어요</h3>
-    <p class="body-text">확률 기반이기 때문에 완전히 똑같은 질문을 해도 매번 조금씩 다른 답이 나올 수 있어요. 또한 AI는 사실을 "아는" 게 아니라 "그럴듯한 답을 생성"하는 것이기 때문에, 중요한 정보는 반드시 확인이 필요해요.</p>
+    <p class="body-text">이 확률적 특성 때문에 AI 답변에는 중요한 특징이 3가지 있어요.</p>
+
+    <div class="point-box">
+      <div class="point-box-title">확률적 답변의 3가지 특징</div>
+      <ul class="point-list">
+        <li><strong>같은 질문도 매번 답이 달라질 수 있어요.</strong> 동일한 프롬프트를 3번 입력하면 3번 다 조금씩 다른 답이 나올 수 있어요.</li>
+        <li><strong>자신감 있게 틀릴 수 있어요.</strong> AI는 "확률적으로 그럴듯한 말"을 하기 때문에, 틀린 정보도 확신에 찬 말투로 답할 수 있어요.</li>
+        <li><strong>프롬프트를 어떻게 쓰느냐에 따라 결과가 크게 달라져요.</strong> 같은 AI라도 질문 방식에 따라 전혀 다른 품질의 답변이 나와요. 그래서 프롬프트가 핵심입니다.</li>
+      </ul>
+    </div>
+
+    <h3>③ 할루시네이션(Hallucination) — 환각 현상</h3>
 
     <div class="warning">
-      <div class="warning-label">⚠️ 주의 — 할루시네이션 (Hallucination)</div>
-      <p>AI가 틀린 정보를 마치 사실인 것처럼 자신 있게 말하는 현상을 <strong>할루시네이션(환각)</strong>이라고 해요. AI를 맹신하면 안 되는 이유가 바로 이거예요. 특히 수치, 날짜, 사람 이름, 법률·의료 정보는 반드시 원본 출처에서 확인하세요.</p>
+      <div class="warning-label">⚠️ 반드시 알아야 할 AI의 한계</div>
+      <p>AI가 틀린 정보를 마치 사실인 것처럼 자신 있게 말하는 현상을 <strong>할루시네이션(환각)</strong>이라고 해요. AI를 맹신하면 안 되는 가장 큰 이유예요.</p>
+    </div>
+
+    <h4>왜 할루시네이션이 생기나요?</h4>
+    <p class="body-text">앞서 설명한 것처럼 AI는 "사실을 아는 것"이 아니라 "확률적으로 그럴듯한 말을 생성"하는 방식으로 작동해요. 그래서 학습 데이터에 없는 내용이나 정확한 수치가 필요한 질문에서는 있을 법한 내용을 지어낼 수 있어요. 거짓말을 하려는 게 아니라, 구조적으로 그럴 수밖에 없는 거예요.</p>
+
+    <div class="point-box">
+      <div class="point-box-title">할루시네이션이 특히 자주 나타나는 상황</div>
+      <ul class="point-list">
+        <li><strong>정확한 수치·통계</strong> — "2025년 공유오피스 시장 규모는 XX억 원" 같은 수치는 지어낼 수 있어요</li>
+        <li><strong>특정 사람 이름·이력</strong> — 존재하지 않는 논문 저자나 수상 이력을 만들어내기도 해요</li>
+        <li><strong>최신 정보</strong> — AI의 학습 데이터에는 시간 제한이 있어서 최근 사건은 모를 수 있어요</li>
+        <li><strong>법률·의료·세무 정보</strong> — 그럴듯하게 들리지만 틀린 내용일 수 있어요. 반드시 전문가 확인 필요</li>
+        <li><strong>링크·URL</strong> — 존재하지 않는 웹페이지 주소를 만들어 제시하기도 해요</li>
+      </ul>
+    </div>
+
+    <h4>AI 답변을 검증하는 방법</h4>
+    <div class="point-box">
+      <div class="point-box-title">실전 검증 체크리스트</div>
+      <ul class="point-list">
+        <li><strong>수치·통계는 원본 출처 확인</strong> — AI가 준 숫자는 반드시 공식 보고서나 뉴스 기사에서 직접 확인하세요</li>
+        <li><strong>"출처가 어디야?"라고 물어보기</strong> — AI에게 직접 출처를 요청하고, 실제로 그 출처가 존재하는지 확인하세요</li>
+        <li><strong>Perplexity 활용</strong> — 최신 정보나 사실 확인이 필요할 땐 실시간 검색 기반의 Perplexity를 함께 사용하세요</li>
+        <li><strong>중요한 내용은 두 번 물어보기</strong> — 같은 질문을 다른 방식으로 다시 물어보면 답변이 일관적인지 확인할 수 있어요</li>
+        <li><strong>AI를 초안 도구로만 사용</strong> — 최종 결과물은 반드시 사람이 검토하고 수정하는 습관을 들이세요</li>
+      </ul>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-label">💡 핵심 마인드셋</div>
+      <p>AI는 <strong>"매우 유능하지만 가끔 자신있게 거짓말하는 인턴"</strong>이라고 생각하면 돼요. 초안 작성, 아이디어 발산, 구조 잡기엔 탁월하지만, 최종 팩트 확인은 반드시 사람이 해야 해요.</p>
     </div>
   </section>
 
@@ -707,15 +766,31 @@
           <td>최신 뉴스·리서치</td>
           <td>보고서 분석, 긴 글 요약</td>
         </tr>
+        <tr>
+          <td class="label-col">무료 플랜</td>
+          <td>있음 (기능 제한)</td>
+          <td>있음 (GPT-4o 일부)</td>
+          <td>있음 (검색 횟수 제한)</td>
+          <td>있음 (사용량 제한)</td>
+        </tr>
         <tr class="highlight-row">
-          <td class="label-col">무료 여부</td>
-          <td>무료 (GWS 구독 시 확장)</td>
-          <td>무료 (GPT-4는 유료)</td>
-          <td>무료 (Pro는 유료)</td>
-          <td>무료 (Pro는 유료)</td>
+          <td class="label-col">유료 구독</td>
+          <td>Gemini Advanced<br><strong>월 $19.99~</strong><br><small style="font-style:normal;">(Google One AI Premium)</small></td>
+          <td>ChatGPT Plus<br><strong>월 $20~</strong><br><small style="font-style:normal;">(GPT-4o 무제한 등)</small></td>
+          <td>Perplexity Pro<br><strong>월 $20~</strong><br><small style="font-style:normal;">(무제한 검색·파일 업로드)</small></td>
+          <td>Claude Pro<br><strong>월 $20~</strong><br><small style="font-style:normal;">(사용량 5배·우선 접속)</small></td>
         </tr>
       </tbody>
     </table>
+
+    <div class="point-box" style="margin-top:0.75rem;">
+      <div class="point-box-title">💡 유료 구독, 꼭 해야 하나요?</div>
+      <ul class="point-list">
+        <li>무료 플랜도 기본 업무 활용엔 충분해요. 먼저 무료로 써보고 필요하면 업그레이드하세요.</li>
+        <li>우리 교육은 <strong>무료 플랜 기준</strong>으로 진행해요. GWS 구독을 통해 Gemini를 이미 사용할 수 있어요.</li>
+        <li>유료 플랜의 핵심 차이는 응답 속도, 사용량 한도, 최신 모델 접근 여부예요.</li>
+      </ul>
+    </div>
 
     <div class="point-box">
       <div class="point-box-title">우리 교육에서 Gemini를 쓰는 이유</div>
@@ -762,7 +837,12 @@
             <div class="analogy-label">🎭 비유 — 배우</div>
             <p>AI는 어떤 역할이든 연기할 수 있는 배우예요. 역할 지정이 없으면 그냥 엑스트라지만, 역할을 주면 주연배우로 바뀝니다.</p>
           </div>
-          <p class="prompt-el-example" style="margin-top:0.6rem;">예: <span>"너는 B2B 스타트업에서 10년 일한 마케팅 전문가야."</span></p>
+          <p class="prompt-el-example" style="margin-top:0.6rem;">
+            <span style="display:block;margin-bottom:0.3rem;">"너는 B2B 스타트업에서 10년 일한 마케팅 전문가야."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"너는 친절하고 꼼꼼한 HR 담당자야."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"너는 공유오피스 업계를 잘 아는 비즈니스 전략가야."</span>
+            <span style="display:block;">"너는 글을 쉽고 간결하게 잘 쓰는 카피라이터야."</span>
+          </p>
         </div>
       </div>
 
@@ -778,7 +858,12 @@
             <div class="analogy-label">🗺️ 비유 — 내비게이션</div>
             <p>내비게이션한테 "빨리 가줘"라고만 하면 어디로 가야 할지 몰라요. 출발지, 목적지, 현재 상황을 줘야 최적 경로가 나오죠.</p>
           </div>
-          <p class="prompt-el-example" style="margin-top:0.6rem;">예: <span>"우리 회사는 공유오피스를 운영하는 스타트업이고, 독자는 입주사 담당자야."</span></p>
+          <p class="prompt-el-example" style="margin-top:0.6rem;">
+            <span style="display:block;margin-bottom:0.3rem;">"우리 회사는 공유오피스를 운영하는 스타트업이고, 독자는 입주사 담당자야."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"나는 지점 운영팀 매니저고, 이번 주 내로 보고서를 제출해야 해."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"상대방은 IT에 익숙하지 않은 50대 임원이야."</span>
+            <span style="display:block;">"지금까지 작성한 내용은 이거야: [내용 붙여넣기]"</span>
+          </p>
         </div>
       </div>
 
@@ -794,7 +879,12 @@
             <div class="analogy-label">📋 비유 — 카페 주문</div>
             <p>"커피 주세요"보다 "아이스 아메리카노, 샷 추가, 시럽 빼고"처럼 구체적으로 말해야 원하는 게 나오죠.</p>
           </div>
-          <p class="prompt-el-example" style="margin-top:0.6rem;">예: <span>"온보딩 안내 이메일을 써줘. ① 환영 인사 ② 시설 안내 ③ 담당자 연락처 포함해서."</span></p>
+          <p class="prompt-el-example" style="margin-top:0.6rem;">
+            <span style="display:block;margin-bottom:0.3rem;">"온보딩 안내 이메일을 써줘. ① 환영 인사 ② 시설 안내 ③ 담당자 연락처 포함해서."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"아래 회의록을 읽고 핵심 결정사항과 액션 아이템을 뽑아줘."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"이 보고서의 문제점을 3가지 찾아주고, 각각 개선안도 함께 제시해줘."</span>
+            <span style="display:block;">"이 내용을 SNS 게시글 형태로 바꿔줘. 해시태그 5개도 포함해서."</span>
+          </p>
         </div>
       </div>
 
@@ -810,7 +900,12 @@
             <div class="analogy-label">🖨️ 비유 — 프린터 설정</div>
             <p>같은 문서도 A4로 뽑을지, 명함 크기로 뽑을지에 따라 완전히 달라지죠. 출력형식 지정은 AI한테 "이런 모양으로 뽑아줘"라고 말하는 거예요.</p>
           </div>
-          <p class="prompt-el-example" style="margin-top:0.6rem;">예: <span>"bullet point 5개로, 각 항목은 2줄 이내, 200자 내외로 작성해줘."</span></p>
+          <p class="prompt-el-example" style="margin-top:0.6rem;">
+            <span style="display:block;margin-bottom:0.3rem;">"bullet point 5개로, 각 항목은 2줄 이내, 200자 내외로 작성해줘."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"표 형식으로 만들어줘. 열은 항목명 / 내용 / 담당자로."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"A4 1장 분량으로, 제목·소제목·본문 구조로 써줘."</span>
+            <span style="display:block;">"초등학생도 이해할 수 있는 말로, 3문장 이내로 요약해줘."</span>
+          </p>
         </div>
       </div>
     </div>
@@ -839,7 +934,7 @@
     <div class="section-num">Section 06</div>
     <h2 class="section-title">좋은 프롬프트 vs 나쁜 프롬프트</h2>
 
-    <p class="body-text">실제 예시를 통해 차이를 직접 느껴보세요.</p>
+    <p class="body-text">실제 예시를 통해 차이를 직접 느껴보세요. 좋은 프롬프트 예시에는 각 요소가 어디에 해당하는지 표시했어요.</p>
 
     <h3>예시 1 — 보고서 작성</h3>
     <div class="compare-pair">
@@ -849,7 +944,7 @@
       </div>
       <div class="compare-good">
         <div class="compare-tag">✅ 좋은 프롬프트</div>
-        <div class="compare-prompt">너는 기업 전략 컨설턴트야.<br>공유오피스 시장의 2026년 트렌드를 분석하는 보고서 초안을 작성해줘.<br>독자는 사내 임원이고, 배경·현황·시사점 3가지 섹션으로 구성해줘.<br>각 섹션은 3줄 이내로 간결하게 작성해줘.</div>
+        <div class="compare-prompt">너는 기업 전략 컨설턴트야. <span class="anno">← 역할</span><br>우리 회사는 공유오피스를 운영하고 있고, 독자는 사내 임원이야. <span class="anno">← 맥락</span><br>공유오피스 시장의 2026년 트렌드를 분석하는 보고서 초안을 작성해줘. <span class="anno">← 지시</span><br>배경·현황·시사점 3가지 섹션으로, 각 섹션은 3줄 이내로 간결하게 작성해줘. <span class="anno">← 출력형식</span></div>
       </div>
     </div>
 
@@ -861,7 +956,7 @@
       </div>
       <div class="compare-good">
         <div class="compare-tag">✅ 좋은 프롬프트</div>
-        <div class="compare-prompt">너는 친절하고 전문적인 비즈니스 커뮤니케이터야.<br>우리 회사(패스트파이브)는 공유오피스를 운영하고 있어.<br>신규 입주사 담당자에게 보내는 첫 번째 온보딩 안내 이메일을 작성해줘.<br>① 환영 인사 ② 주요 시설 안내 ③ 담당 매니저 연락처 포함, 200자 이내로.</div>
+        <div class="compare-prompt">너는 친절하고 전문적인 비즈니스 커뮤니케이터야. <span class="anno">← 역할</span><br>우리 회사(패스트파이브)는 공유오피스를 운영하고 있고, 신규 입주사가 다음 주부터 들어와. <span class="anno">← 맥락</span><br>신규 입주사 담당자에게 보내는 첫 번째 온보딩 안내 이메일을 작성해줘. <span class="anno">← 지시</span><br>① 환영 인사 ② 주요 시설 안내 ③ 담당 매니저 연락처 포함, 톤은 따뜻하게, 200자 이내로. <span class="anno">← 출력형식</span></div>
       </div>
     </div>
 
@@ -873,9 +968,34 @@
       </div>
       <div class="compare-good">
         <div class="compare-tag">✅ 좋은 프롬프트</div>
-        <div class="compare-prompt">너는 꼼꼼한 비서야.<br>아래 회의 내용을 읽고<br>① 주요 결정사항 ② 액션 아이템 ③ 다음 회의 안건<br>세 가지로 나눠서 bullet point로, 각 항목 2줄 이내로 정리해줘.<br><br>[회의 내용 붙여넣기]</div>
+        <div class="compare-prompt">너는 꼼꼼한 비서야. <span class="anno">← 역할</span><br>아래는 오늘 오전 지점 운영팀 주간 회의 내용이야. <span class="anno">← 맥락</span><br>회의 내용을 읽고 ① 주요 결정사항 ② 액션 아이템(담당자 포함) ③ 다음 회의 안건을 정리해줘. <span class="anno">← 지시</span><br>각 항목은 bullet point로, 2줄 이내로 써줘.<br><br>[회의 내용 붙여넣기] <span class="anno">← 출력형식</span></div>
       </div>
     </div>
+
+    <h3>예시 4 — 아이디어 발산</h3>
+    <div class="compare-pair">
+      <div class="compare-bad">
+        <div class="compare-tag">❌ 나쁜 프롬프트</div>
+        <div class="compare-prompt">아이디어 줘</div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-tag">✅ 좋은 프롬프트</div>
+        <div class="compare-prompt">너는 창의적인 이벤트 기획자야. <span class="anno">← 역할</span><br>패스트파이브는 공유오피스 브랜드고, 입주사 만족도를 높이기 위한 커뮤니티 이벤트를 기획 중이야. 예산은 100만원 이내야. <span class="anno">← 맥락</span><br>이벤트 아이디어를 10가지 제안해줘. <span class="anno">← 지시</span><br>각 아이디어는 이벤트명 + 한 줄 설명 형태로, 번호를 붙여서 써줘. <span class="anno">← 출력형식</span></div>
+      </div>
+    </div>
+
+    <h3>예시 5 — 데이터 정리</h3>
+    <div class="compare-pair">
+      <div class="compare-bad">
+        <div class="compare-tag">❌ 나쁜 프롬프트</div>
+        <div class="compare-prompt">이 데이터 정리해줘</div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-tag">✅ 좋은 프롬프트</div>
+        <div class="compare-prompt">너는 데이터 분석에 능숙한 전문가야. <span class="anno">← 역할</span><br>아래는 지난달 입주사 만족도 설문 결과야. <span class="anno">← 맥락</span><br>이 데이터를 분석해서 ① 주요 패턴 3가지 ② 특이사항 ③ 개선 제안 1가지를 도출해줘. <span class="anno">← 지시</span><br>각 항목은 소제목을 달고, 전체 분량은 A4 반 장 이내로 써줘.<br><br>[데이터 붙여넣기] <span class="anno">← 출력형식</span></div>
+      </div>
+    </div>
+
   </section>
 
   <!-- 07 질문 리스트 -->
@@ -941,9 +1061,9 @@
     <div class="section-num">이번 주 미션</div>
     <h2 class="section-title">오늘부터 이것만 하세요</h2>
     <ul class="checklist">
+      <li><div class="check-box"></div>위 질문 리스트 중 1개를 골라 Gemini에 직접 입력해보기</li>
       <li><div class="check-box"></div>내 업무 상황에 맞는 프롬프트를 4요소를 포함해서 1개 작성해보기</li>
-      <li><div class="check-box"></div>교육 전 나쁜 프롬프트로 뽑았던 결과와 비교해보기</li>
-      <li><div class="check-box"></div>작성한 프롬프트와 결과물을 슬랙 채널에 공유하기</li>
+      <li><div class="check-box"></div>작성한 프롬프트와 결과물을 슬랙 #ai-edu 채널에 공유하기</li>
     </ul>
   </section>
 
@@ -954,5 +1074,42 @@
   </div>
 
 </div>
+
+<script>
+  const sections = ['s1','s2','s3','s4','s5','s6','s7'];
+
+  // 클릭 시 부드럽게 스크롤 (sticky bar 높이 보정)
+  document.querySelectorAll('.toc-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.getAttribute('href').replace('#','');
+      const el = document.getElementById(id);
+      if (!el) return;
+      const barH = document.getElementById('toc-bar').offsetHeight;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - barH - 16;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // 스크롤 감지 → 현재 섹션 버튼 활성화
+  function onScroll() {
+    const barH = document.getElementById('toc-bar').offsetHeight + 24;
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.getBoundingClientRect().top <= barH) current = id;
+    });
+
+    sections.forEach(id => {
+      const btn = document.getElementById('btn-' + id);
+      if (!btn) return;
+      btn.classList.toggle('active', id === current);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
 </body>
 </html>
