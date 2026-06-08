@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF Academy — AI 활용 교육 (Gemini 기초)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #fafafa;
+    --border: #efefef;
+    --border2: #e0e0e0;
+    --text-1: #111111;
+    --text-2: #555555;
+    --text-3: #999999;
+    --yellow: #f5c842;
+    --coral: #f26c4f;
+    --yellow-dim: rgba(245,200,66,0.12);
+    --coral-dim: rgba(242,108,79,0.10);
+    --done-bg: #f7f7f7;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-1);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 7rem;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 1rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-1);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+  }
+
+  .title-accent {
+    display: inline-block;
+    position: relative;
+  }
+
+  .title-accent::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 2px;
+    width: 100%; height: 6px;
+    background: var(--yellow);
+    opacity: 0.5;
+    z-index: -1;
+    border-radius: 2px;
+  }
+
+  .subtitle {
+    font-size: 0.88rem;
+    color: var(--text-3);
+    font-weight: 300;
+  }
+
+  /* ── META ── */
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .chip {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-2);
+    border: 1px solid var(--border2);
+    padding: 0.28rem 0.7rem;
+    border-radius: 100px;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-label {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .progress-count {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--coral);
+    font-family: 'Inter', sans-serif;
+  }
+
+  .progress-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--yellow), var(--coral));
+    border-radius: 100px;
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── WEEK LIST ── */
+  .weeks {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .week-row {
+    border-top: 1px solid var(--border);
+  }
+
+  .week-row:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* 헤더 행 */
+  .week-trigger {
+    display: grid;
+    grid-template-columns: 56px 80px 1fr auto;
+    align-items: center;
+    padding: 1.1rem 0;
+    cursor: pointer;
+    gap: 0;
+    transition: background 0.15s;
+    user-select: none;
+  }
+
+  .week-trigger:hover { background: var(--bg2); margin: 0 -1.5rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+
+  .wt-num {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-3);
+    letter-spacing: 0.06em;
+  }
+
+  .wt-date {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-3);
+  }
+
+  .wt-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .wt-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-1);
+    line-height: 1.3;
+  }
+
+  .wt-title.done { color: var(--text-3); }
+
+  .wt-badges {
+    display: flex;
+    gap: 0.3rem;
+    align-items: center;
+  }
+
+  .badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.45rem;
+    border-radius: 3px;
+  }
+
+  .badge-offline  { background: var(--yellow-dim); color: #a07800; }
+  .badge-self     { background: #f0f0f0; color: #666; }
+  .badge-current  { background: var(--coral-dim); color: var(--coral); }
+  .badge-done     { background: #f0f0f0; color: #bbb; }
+
+  .wt-arrow {
+    font-size: 0.7rem;
+    color: var(--text-3);
+    transition: transform 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .wt-arrow.open { transform: rotate(180deg); }
+
+  /* 펼쳐지는 바디 */
+  .week-body {
+    display: none;
+    padding: 0 0 1.5rem 136px;
+  }
+
+  .week-body.open { display: block; }
+
+  .wb-block {
+    margin-bottom: 1.1rem;
+  }
+
+  .wb-block:last-child { margin-bottom: 0; }
+
+  .wb-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 0.45rem;
+  }
+
+  .wb-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .wb-list li {
+    font-size: 0.84rem;
+    color: var(--text-2);
+    padding-left: 0.9rem;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .wb-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border2);
+    font-size: 0.7rem;
+    top: 0.15rem;
+  }
+
+  /* 미션 */
+  .mission {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+  }
+
+  .mission-head {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .mission-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--coral);
+    flex-shrink: 0;
+  }
+
+  .mission-label-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coral);
+  }
+
+  .mission ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .mission ul li {
+    font-size: 0.83rem;
+    color: var(--text-2);
+    padding-left: 0.85rem;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .mission ul li::before {
+    content: '↗';
+    position: absolute;
+    left: 0;
+    font-size: 0.65rem;
+    color: var(--coral);
+    top: 0.18rem;
+  }
+
+  /* 리소스 버튼 */
+  .resources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.85rem;
+  }
+
+  .res-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.4rem 0.85rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+
+  .res-btn:hover { transform: translateY(-1px); }
+
+  .btn-dark {
+    background: var(--text-1);
+    color: #fff;
+    border-color: var(--text-1);
+  }
+
+  .btn-dark:hover { background: #333; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text-2);
+    border-color: var(--border2);
+  }
+
+  .btn-outline:hover { border-color: var(--text-2); color: var(--text-1); }
+
+  .btn-locked {
+    background: var(--bg2);
+    color: var(--text-3);
+    border-color: var(--border);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* ── 현재 주차 강조선 ── */
+  .week-row.current .week-trigger {
+    position: relative;
+  }
+
+  .week-row.current .wt-num {
+    color: var(--coral);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .footer-logo {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-3);
+    letter-spacing: 0.06em;
+  }
+
+  .footer-logo em {
+    font-style: normal;
+    color: var(--coral);
+  }
+
+  .footer-note { font-size: 0.75rem; color: var(--text-3); }
+
+  @media (max-width: 560px) {
+    .week-trigger { grid-template-columns: 44px 66px 1fr auto; }
+    .week-body { padding-left: 110px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="eyebrow">FF Academy · Gemini 기초반 1기 · 2026</div>
+    <h1 class="title">AI 활용 교육<br><span class="title-accent">학습 자료 인덱스</span></h1>
+    <p class="subtitle">매주 자료가 업데이트됩니다. 해당 주차를 클릭해 확인하세요.</p>
+  </div>
+
+  <!-- META -->
+  <div class="meta">
+    <span class="chip">6/9 ~ 7/14</span>
+    <span class="chip">총 6주</span>
+    <span class="chip">슬랙 #ai-edu</span>
+    <span class="chip">문의 @구연정</span>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-top">
+      <span class="progress-label">Progress</span>
+      <span class="progress-count" id="prog-text">0 / 6</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+
+  <!-- WEEKS -->
+  <div class="weeks">
+
+    <!-- 1주차 -->
+    <div class="week-row current" id="w1">
+      <div class="week-trigger" onclick="toggle('w1')">
+        <span class="wt-num">01</span>
+        <span class="wt-date">6/9 (화)</span>
+        <div class="wt-info">
+          <div class="wt-title">Orientation</div>
+          <div class="wt-badges">
+            <span class="badge badge-offline">대면</span>
+            <span class="badge badge-current">진행 중</span>
+          </div>
+        </div>
+        <span class="wt-arrow open" id="arr-w1">▾</span>
+      </div>
+      <div class="week-body open" id="body-w1">
+        <div class="wb-block">
+          <div class="wb-label">학습 내용</div>
+          <ul class="wb-list">
+            <li>업무에 AI 활용하고 있는 사내 사례 시연</li>
+            <li>AI 도입 전후 달라진 점 솔직하게 공유 (한계·실패 경험 포함)</li>
+            <li>입문자에게 추천하는 AI 공부법 및 첫 활용 팁</li>
+            <li>6주 커리큘럼 전체 흐름 안내</li>
+          </ul>
+        </div>
+        <div class="wb-block">
+          <div class="mission">
+            <div class="mission-head">
+              <div class="mission-dot"></div>
+              <span class="mission-label-text">이번 주 미션</span>
+            </div>
+            <ul>
+              <li>사전 설문 제출 (현재 AI 활용 수준 / 기대하는 것 / 어려운 점)</li>
+              <li>개인 학습 목표 1가지 작성 후 슬랙 채널 공유</li>
+            </ul>
+          </div>
+        </div>
+        <div class="resources">
+          <a href="ai_week1_study.html" class="res-btn btn-dark">📄 학습자료 보기</a>
+          <a href="#" class="res-btn btn-outline">📋 사전 설문</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2주차 -->
+    <div class="week-row" id="w2">
+      <div class="week-trigger" onclick="toggle('w2')">
+        <span class="wt-num">02</span>
+        <span class="wt-date">6/16 (화)</span>
+        <div class="wt-info">
+          <div class="wt-title">프롬프트 작성법</div>
+          <div class="wt-badges">
+            <span class="badge badge-self">자기주도</span>
+          </div>
+        </div>
+        <span class="wt-arrow" id="arr-w2">▾</span>
+      </div>
+      <div class="week-body" id="body-w2">
+        <div class="wb-block">
+          <div class="wb-label">학습 내용</div>
+          <ul class="wb-list">
+            <li>Gemini에게 직접 질문하며 프롬프트 구조 체득</li>
+            <li>역할 / 맥락 / 지시 / 출력형식 4요소 실습</li>
+            <li>좋은 프롬프트 vs 나쁜 프롬프트 비교 경험</li>
+          </ul>
+        </div>
+        <div class="wb-block">
+          <div class="mission">
+            <div class="mission-head">
+              <div class="mission-dot"></div>
+              <span class="mission-label-text">이번 주 미션</span>
+            </div>
+            <ul>
+              <li>내 업무 상황에 맞는 프롬프트 1개 작성 후 슬랙 채널 공유</li>
+            </ul>
+          </div>
+        </div>
+        <div class="resources">
+          <span class="res-btn btn-locked">🔒 자료 준비 중 (6/16 공개)</span>
+          <a href="#" class="res-btn btn-outline">📎 프롬프트 스타터 킷</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3주차 -->
+    <div class="week-row" id="w3">
+      <div class="week-trigger" onclick="toggle('w3')">
+        <span class="wt-num">03</span>
+        <span class="wt-date">6/23 (화)</span>
+        <div class="wt-info">
+          <div class="wt-title">Gemini 핵심 기능 익히기</div>
+          <div class="wt-badges">
+            <span class="badge badge-self">자기주도</span>
+          </div>
+        </div>
+        <span class="wt-arrow" id="arr-w3">▾</span>
+      </div>
+      <div class="week-body" id="body-w3">
+        <div class="wb-block">
+          <div class="wb-label">학습 내용</div>
+          <ul class="wb-list">
+            <li>Gemini 화면 구성, 핵심기능 (딥 리서치, Gem 맞춤 챗봇)</li>
+            <li>업무 활용 기초: 이메일 작성, 발표 준비</li>
+            <li>보고서 초안 작성 실습</li>
+          </ul>
+        </div>
+        <div class="wb-block">
+          <div class="mission">
+            <div class="mission-head">
+              <div class="mission-dot"></div>
+              <span class="mission-label-text">이번 주 미션</span>
+            </div>
+            <ul>
+              <li>내 업무에 맞는 Gem 1개 직접 만들기 (예: 이메일 작성 Gem, 회의록 요약 Gem)</li>
+              <li>만든 Gem으로 실제 업무 상황 1가지 처리 후 결과물 슬랙 공유</li>
+            </ul>
+          </div>
+        </div>
+        <div class="resources">
+          <span class="res-btn btn-locked">🔒 자료 준비 중 (6/23 공개)</span>
+          <a href="https://www.inflearn.com" target="_blank" class="res-btn btn-outline">🎬 인프런 강의 (약 1h)</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4주차 -->
+    <div class="week-row" id="w4">
+      <div class="week-trigger" onclick="toggle('w4')">
+        <span class="wt-num">04</span>
+        <span class="wt-date">6/30 (화)</span>
+        <div class="wt-info">
+          <div class="wt-title">NotebookLM 핵심 기능 익히기</div>
+          <div class="wt-badges">
+            <span class="badge badge-self">자기주도</span>
+          </div>
+        </div>
+        <span class="wt-arrow" id="arr-w4">▾</span>
+      </div>
+      <div class="week-body" id="body-w4">
+        <div class="wb-block">
+          <div class="wb-label">학습 내용</div>
+          <ul class="wb-list">
+            <li>NotebookLM 화면 구성 및 노트북 만들기</li>
+            <li>문서 업로드 방법: PDF, Google Docs, 웹페이지 링크 등</li>
+            <li>업로드한 자료 기반으로 질문하고 인사이트 추출하기</li>
+            <li>여러 문서를 동시에 업로드해 비교 분석하기</li>
+            <li>오디오 오버뷰 기능으로 문서를 팟캐스트처럼 요약 듣기</li>
+          </ul>
+        </div>
+        <div class="wb-block">
+          <div class="mission">
+            <div class="mission-head">
+              <div class="mission-dot"></div>
+              <span class="mission-label-text">이번 주 미션</span>
+            </div>
+            <ul>
+              <li>공유오피스·부동산·담당 업무 관련 최신 리포트 2개 이상 업로드</li>
+              <li>핵심 내용 3가지 + 우리 회사 관점 시사점 정리</li>
+              <li>결과물을 슬라이드 또는 인포그래픽으로 제작해 채널 공유</li>
+            </ul>
+          </div>
+        </div>
+        <div class="resources">
+          <span class="res-btn btn-locked">🔒 자료 준비 중 (6/30 공개)</span>
+          <a href="https://www.inflearn.com" target="_blank" class="res-btn btn-outline">🎬 인프런 강의 (55min)</a>
+          <a href="https://www.youtube.com" target="_blank" class="res-btn btn-outline">▶ YouTube (24min)</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5주차 -->
+    <div class="week-row" id="w5">
+      <div class="week-trigger" onclick="toggle('w5')">
+        <span class="wt-num">05</span>
+        <span class="wt-date">7/7 (화)</span>
+        <div class="wt-info">
+          <div class="wt-title">GWS 활용법</div>
+          <div class="wt-badges">
+            <span class="badge badge-self">자기주도</span>
+          </div>
+        </div>
+        <span class="wt-arrow" id="arr-w5">▾</span>
+      </div>
+      <div class="week-body" id="body-w5">
+        <div class="wb-block">
+          <div class="wb-label">학습 내용</div>
+          <ul class="wb-list">
+            <li>Gemini in Gmail: 메일 초안 작성 및 긴 스레드 요약</li>
+            <li>Gemini in Docs: 보고서·회의록 초안 자동 생성 및 편집</li>
+            <li>Gemini in Sheets: 수식 지원, 비정형 데이터 표 구조화, 설문 결과 분석</li>
+          </ul>
+        </div>
+        <div class="wb-block">
+          <div class="mission">
+            <div class="mission-head">
+              <div class="mission-dot"></div>
+              <span class="mission-label-text">이번 주 미션</span>
+            </div>
+            <ul>
+              <li>부서별 AI 활용 사례 카드 1장 작성 (업무 상황 / 사용 프롬프트 / 결과물 / 시간 절감 효과)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="resources">
+          <span class="res-btn btn-locked">🔒 자료 준비 중 (7/7 공개)</span>
+          <a href="https://www.youtube.com" target="_blank" class="res-btn btn-outline">▶ YouTube 예시</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6주차 -->
+    <div class="week-row" id="w6">
+      <div class="week-trigger" onclick="toggle('w6')">
+        <span class="wt-num">06</span>
+        <span class="wt-date">7/14 (화)</span>
+        <div class="wt-info">
+          <div class="wt-title">부서별 AI 활용 사례 공유</div>
+          <div class="wt-badges">
+            <span class="badge badge-offline">대면</span>
+          </div>
+        </div>
+        <span class="wt-arrow" id="arr-w6">▾</span>
+      </div>
+      <div class="week-body" id="body-w6">
+        <div class="wb-block">
+          <div class="wb-label">학습 내용</div>
+          <ul class="wb-list">
+            <li>1~5주차 학습 회고: 각자 가장 유용했던 기능·프롬프트 공유</li>
+            <li>부서별 소그룹 토론: 반복·소모적인 업무 포인트 찾기</li>
+            <li>발굴한 사례를 실제 프롬프트로 전환하는 실습</li>
+            <li>타 기업·유사 업종 AI 활용 사례 인풋 및 전체 발표</li>
+          </ul>
+        </div>
+        <div class="wb-block">
+          <div class="mission">
+            <div class="mission-head">
+              <div class="mission-dot"></div>
+              <span class="mission-label-text">최종 산출물</span>
+            </div>
+            <ul>
+              <li>작성한 사례 카드를 Google Drive "AI 활용 사례 모음" 폴더에 업로드</li>
+            </ul>
+          </div>
+        </div>
+        <div class="resources">
+          <span class="res-btn btn-locked">🔒 자료 준비 중 (7/14 공개)</span>
+          <a href="#" class="res-btn btn-outline">📁 사례 카드 템플릿</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-logo">FF <em>Academy</em></div>
+    <div class="footer-note">문의 · 슬랙 @구연정</div>
+  </div>
+
+</div>
+
+<script>
+  function toggle(id) {
+    const body = document.getElementById('body-' + id);
+    const arr  = document.getElementById('arr-' + id);
+    const open = body.classList.contains('open');
+    body.classList.toggle('open', !open);
+    arr.classList.toggle('open', !open);
+  }
+
+  // 진행률
+  const start = new Date('2026-06-09');
+  const now   = new Date();
+  const diff  = Math.floor((now - start) / (1000*60*60*24));
+  const week  = Math.min(Math.max(Math.ceil(diff / 7), 0), 6);
+  const pct   = Math.round((week / 6) * 100);
+
+  document.getElementById('prog-text').textContent = week + ' / 6';
+  setTimeout(() => {
+    document.getElementById('prog-fill').style.width = pct + '%';
+  }, 400);
+
+  // 완료 처리
+  for (let i = 1; i <= week - 1; i++) {
+    const row = document.getElementById('w' + i);
+    const title = row.querySelector('.wt-title');
+    const badges = row.querySelector('.wt-badges');
+    if (title) title.classList.add('done');
+    if (badges) {
+      badges.innerHTML = '<span class="badge badge-done">완료</span>';
+    }
+  }
+</script>
+</body>
+</html>
