@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1주차 학습자료 | AI & 프롬프트 입문</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f9f7f2;
+    --surface: #ffffff;
+    --border: #e8e4da;
+    --border2: #d4cfc3;
+    --text-primary: #1c1a16;
+    --text-secondary: #4a4740;
+    --text-muted: #8a8780;
+    --accent: #c9a227;
+    --accent-dim: rgba(201,162,39,0.10);
+    --accent-dim2: rgba(201,162,39,0.05);
+    --navy: #1e2d4a;
+    --navy-dim: rgba(30,45,74,0.07);
+    --serif: 'Noto Serif KR', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* ── 페이지 레이아웃 ── */
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+
+  /* ── 상단 헤더 ── */
+  .doc-header {
+    border-bottom: 2px solid var(--text-primary);
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .doc-label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .doc-title {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+
+  .doc-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  /* ── 목차 ── */
+  .toc {
+    background: var(--navy-dim);
+    border-left: 3px solid var(--navy);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 3rem;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .toc-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 0.6rem;
+  }
+
+  .toc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .toc-list li a {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.15s;
+  }
+
+  .toc-list li a:hover { color: var(--navy); }
+
+  .toc-num {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    min-width: 18px;
+  }
+
+  /* ── 섹션 ── */
+  .section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .section-num {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── 본문 텍스트 ── */
+  .body-text {
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+
+  .body-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ── 비유 박스 ── */
+  .analogy {
+    background: var(--accent-dim2);
+    border: 1px solid rgba(201,162,39,0.2);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .analogy-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .analogy p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  /* ── 경고 박스 ── */
+  .warning {
+    background: #fff8f0;
+    border: 1px solid rgba(200,80,30,0.2);
+    border-left: 3px solid #c8501e;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .warning-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c8501e;
+    margin-bottom: 0.4rem;
+  }
+
+  .warning p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  /* ── 포인트 박스 ── */
+  .point-box {
+    background: var(--navy-dim);
+    border: 1px solid rgba(30,45,74,0.12);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 6px;
+  }
+
+  .point-box-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .point-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .point-list li {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    padding-left: 1.1rem;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .point-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0.3rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── 비교표 (AI 종류) ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.83rem;
+  }
+
+  .compare-table th {
+    background: var(--navy);
+    color: #fff;
+    padding: 0.7rem 0.85rem;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-align: left;
+    border: 1px solid var(--navy);
+  }
+
+  .compare-table th:first-child { width: 100px; }
+
+  .compare-table td {
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+    line-height: 1.65;
+  }
+
+  .compare-table tr:nth-child(even) td { background: var(--navy-dim); }
+
+  .compare-table .highlight-row td {
+    background: var(--accent-dim);
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .compare-table .label-col {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+  }
+
+  /* ── 프롬프트 4요소 ── */
+  .prompt-elements {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1.25rem 0;
+  }
+
+  .prompt-el {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .prompt-el:last-child { border-bottom: none; }
+
+  .prompt-el-left {
+    background: var(--navy);
+    padding: 1.1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .prompt-el-num {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+  }
+
+  .prompt-el-name {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .prompt-el-name-en {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.1rem;
+    font-family: var(--sans);
+    font-weight: 400;
+  }
+
+  .prompt-el-right {
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+  }
+
+  .prompt-el-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 0.5rem;
+  }
+
+  .prompt-el-example {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .prompt-el-example span {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* ── Before/After 비교 ── */
+  .compare-block {
+    margin: 1.5rem 0;
+  }
+
+  .compare-block-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .compare-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .compare-bad {
+    background: #fff5f5;
+    border: 1px solid rgba(200,50,50,0.18);
+    border-top: 3px solid #dc3535;
+    padding: 0.9rem 1rem;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .compare-good {
+    background: #f3faf5;
+    border: 1px solid rgba(30,140,70,0.18);
+    border-top: 3px solid #1e8c46;
+    padding: 0.9rem 1rem;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .compare-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .compare-bad .compare-tag { color: #dc3535; }
+  .compare-good .compare-tag { color: #1e8c46; }
+
+  .compare-prompt {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    font-family: var(--sans);
+  }
+
+  .compare-prompt .anno {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ── 코드 스타일 인라인 ── */
+  .prompt-block {
+    background: #f4f2ec;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+
+  .prompt-block .anno {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.78rem;
+  }
+
+  /* ── 질문 리스트 ── */
+  .question-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .question-group-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .question-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .question-list li {
+    font-size: 0.87rem;
+    color: var(--text-secondary);
+    padding: 0.55rem 0.9rem 0.55rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    position: relative;
+    line-height: 1.65;
+  }
+
+  .question-list li::before {
+    content: '"';
+    position: absolute;
+    left: 0.4rem;
+    top: 0.5rem;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  /* ── 소제목 ── */
+  h3 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 1.75rem 0 0.6rem;
+  }
+
+  h4 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 1.2rem 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── 구분선 ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  /* ── 마무리 체크 ── */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .check-box {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border2);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ── 푸터 ── */
+  .doc-footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .doc-footer-logo {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .doc-footer-logo em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .doc-footer-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 600px) {
+    .compare-pair { grid-template-columns: 1fr; }
+    .prompt-el { grid-template-columns: 1fr; }
+    .prompt-el-left { padding: 0.75rem 1rem; flex-direction: row; align-items: center; gap: 0.75rem; }
+    .compare-table { font-size: 0.75rem; }
+    .compare-table th, .compare-table td { padding: 0.5rem 0.6rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 헤더 -->
+  <div class="doc-header">
+    <div class="doc-label">FF Academy · AI 활용 교육 (Gemini 기초) · 1주차 학습자료</div>
+    <h1 class="doc-title">AI & 프롬프트 입문</h1>
+    <p class="doc-sub">AI를 처음 접하는 분도 이해할 수 있도록 설명합니다. 천천히 읽어보세요.</p>
+  </div>
+
+  <!-- 목차 -->
+  <nav class="toc">
+    <div class="toc-title">목차</div>
+    <ul class="toc-list">
+      <li><a href="#s1"><span class="toc-num">01</span> AI란 무엇인가?</a></li>
+      <li><a href="#s2"><span class="toc-num">02</span> LLM AI란 무엇인가?</a></li>
+      <li><a href="#s3"><span class="toc-num">03</span> 대화형 AI 종류 비교</a></li>
+      <li><a href="#s4"><span class="toc-num">04</span> 프롬프트란 무엇인가?</a></li>
+      <li><a href="#s5"><span class="toc-num">05</span> 프롬프트의 4요소</a></li>
+      <li><a href="#s6"><span class="toc-num">06</span> 좋은 프롬프트 vs 나쁜 프롬프트</a></li>
+      <li><a href="#s7"><span class="toc-num">07</span> Gemini로 프롬프트 공부하는 질문 리스트</a></li>
+    </ul>
+  </nav>
+
+  <!-- 01 AI란 -->
+  <section class="section" id="s1">
+    <div class="section-num">Section 01</div>
+    <h2 class="section-title">AI란 무엇인가?</h2>
+
+    <p class="body-text">AI(인공지능)를 한 마디로 설명하면 <strong>"사람처럼 생각하고 대답하도록 훈련된 컴퓨터 프로그램"</strong>입니다.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">🍳 비유로 이해하기 — 요리사</div>
+      <p>요리를 전혀 모르는 사람한테 "김치찌개 만드는 법"을 물어보면 모른다고 해요. 하지만 수천 가지 레시피를 공부한 요리사한테 물어보면 바로 알려주죠. AI도 마찬가지예요. 인터넷에 있는 수천억 개의 글, 책, 대화를 공부한 뒤 질문에 답할 수 있게 된 거예요.</p>
+    </div>
+
+    <p class="body-text">과거의 AI는 사람이 규칙을 일일이 입력해줘야 했어요. "사과가 나오면 빨간색이라고 답해라" 이런 식으로요. 하지만 지금의 AI는 스스로 방대한 데이터를 학습해서 패턴을 찾아냅니다. 그래서 훨씬 유연하고 다양한 질문에 답할 수 있어요.</p>
+
+    <div class="point-box">
+      <div class="point-box-title">핵심만 기억하세요</div>
+      <ul class="point-list">
+        <li>AI는 도구입니다. 망치처럼 잘 쓰면 강력하고, 잘못 쓰면 쓸모없어요.</li>
+        <li>"AI가 내 일을 빼앗는다"가 아니라 <strong>"AI를 쓰는 사람이 못 쓰는 사람보다 앞서간다"</strong>가 지금의 현실이에요.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 02 LLM -->
+  <section class="section" id="s2">
+    <div class="section-num">Section 02</div>
+    <h2 class="section-title">LLM AI란 무엇인가?</h2>
+
+    <p class="body-text">요즘 우리가 쓰는 Gemini, ChatGPT 같은 AI는 <strong>LLM(Large Language Model, 대규모 언어 모델)</strong>이라는 기술을 기반으로 해요. 이름이 어렵게 들리지만, 3가지 포인트만 기억하면 됩니다.</p>
+
+    <h3>① 엄청난 양의 글을 공부했어요</h3>
+    <p class="body-text">인터넷에 있는 뉴스, 책, 논문, 블로그, 위키피디아 등 수천억 개의 문장을 학습했어요. 사람이 평생 읽어도 다 못 읽을 양이에요. 덕분에 거의 모든 주제에 대해 그럴듯한 답변을 만들어낼 수 있어요.</p>
+
+    <h3>② "다음 단어"를 예측하는 방식으로 작동해요</h3>
+
+    <div class="analogy">
+      <div class="analogy-label">🎲 비유로 이해하기 — 확률 게임</div>
+      <p>LLM은 사실을 "기억"하는 게 아니라 <strong>"이 다음엔 어떤 단어가 올 확률이 높은가"</strong>를 계산해요. "오늘 날씨가 ___" 다음에 올 말은 "맑다"일 확률이 높겠죠? 이런 방식으로 문장 전체를 완성해나갑니다. 아주 정교한 '단어 맞추기 게임'이라고 생각하면 쉬워요.</p>
+    </div>
+
+    <h3>③ 그래서 같은 질문도 매번 답이 달라질 수 있어요</h3>
+    <p class="body-text">확률 기반이기 때문에 완전히 똑같은 질문을 해도 매번 조금씩 다른 답이 나올 수 있어요. 또한 AI는 사실을 "아는" 게 아니라 "그럴듯한 답을 생성"하는 것이기 때문에, 중요한 정보는 반드시 확인이 필요해요.</p>
+
+    <div class="warning">
+      <div class="warning-label">⚠️ 주의 — 할루시네이션 (Hallucination)</div>
+      <p>AI가 틀린 정보를 마치 사실인 것처럼 자신 있게 말하는 현상을 <strong>할루시네이션(환각)</strong>이라고 해요. AI를 맹신하면 안 되는 이유가 바로 이거예요. 특히 수치, 날짜, 사람 이름, 법률·의료 정보는 반드시 원본 출처에서 확인하세요.</p>
+    </div>
+  </section>
+
+  <!-- 03 AI 종류 비교 -->
+  <section class="section" id="s3">
+    <div class="section-num">Section 03</div>
+    <h2 class="section-title">대화형 AI 종류 비교</h2>
+
+    <p class="body-text">지금 시장에는 다양한 대화형 AI가 있어요. 각각 성격이 달라서 상황에 맞게 골라 쓰면 더 효과적이에요.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">🍽️ 비유로 이해하기 — 식당</div>
+      <p>ChatGPT는 뭐든 다 되는 패밀리 레스토랑, Gemini는 우리 회사 업무와 딱 연결되는 구내식당, Perplexity는 최신 정보를 빠르게 찾아주는 뉴스 카페, Claude는 긴 글을 꼼꼼하게 읽어주는 독서 전문 카페예요.</p>
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Gemini ★</th>
+          <th>ChatGPT</th>
+          <th>Perplexity</th>
+          <th>Claude</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-col">만든 곳</td>
+          <td>Google</td>
+          <td>OpenAI</td>
+          <td>Perplexity AI</td>
+          <td>Anthropic</td>
+        </tr>
+        <tr>
+          <td class="label-col">한 줄 특징</td>
+          <td>Google 생태계와 찰떡</td>
+          <td>AI의 대명사, 가장 유명</td>
+          <td>실시간 검색 특화</td>
+          <td>긴 글·분석에 강함</td>
+        </tr>
+        <tr>
+          <td class="label-col">강점</td>
+          <td>Gmail·Docs·Sheets 연동, 한국어 우수</td>
+          <td>다양한 플러그인, 범용성 최고</td>
+          <td>최신 정보 검색, 출처 제공</td>
+          <td>긴 문서 분석, 논리적 글쓰기</td>
+        </tr>
+        <tr>
+          <td class="label-col">약점</td>
+          <td>타 생태계 연동 제한</td>
+          <td>무료 버전 기능 제한</td>
+          <td>창작·글쓰기는 약함</td>
+          <td>Google 연동 없음</td>
+        </tr>
+        <tr>
+          <td class="label-col">이럴 때</td>
+          <td>업무 문서 작성, GWS 연동</td>
+          <td>아이디어 발산, 코딩, 번역</td>
+          <td>최신 뉴스·리서치</td>
+          <td>보고서 분석, 긴 글 요약</td>
+        </tr>
+        <tr class="highlight-row">
+          <td class="label-col">무료 여부</td>
+          <td>무료 (GWS 구독 시 확장)</td>
+          <td>무료 (GPT-4는 유료)</td>
+          <td>무료 (Pro는 유료)</td>
+          <td>무료 (Pro는 유료)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="point-box">
+      <div class="point-box-title">우리 교육에서 Gemini를 쓰는 이유</div>
+      <ul class="point-list">
+        <li>회사에서 이미 Google Workspace를 구독하고 있어서 별도 비용이 없어요.</li>
+        <li>Gmail, Docs, Sheets와 바로 연결돼서 업무에 즉시 적용할 수 있어요.</li>
+        <li>지금 당장 쓸 수 있는 가장 현실적인 선택이에요.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 프롬프트란 -->
+  <section class="section" id="s4">
+    <div class="section-num">Section 04</div>
+    <h2 class="section-title">프롬프트란 무엇인가?</h2>
+
+    <p class="body-text"><strong>프롬프트(Prompt)</strong>는 AI에게 보내는 지시문이에요. 쉽게 말하면 AI한테 하는 "주문"이에요.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">🧑‍🍳 비유로 이해하기 — 세계 최고의 셰프</div>
+      <p>세계 최고의 셰프가 내 옆에 있다고 상상해보세요. 그런데 내가 <strong>"뭔가 맛있는 거 만들어줘"</strong>라고 하면 셰프도 난감해요. 하지만 <strong>"저는 채식주의자고, 오늘 손님 4명이 오는데, 이탈리안 스타일로 30분 안에 만들 수 있는 파스타 레시피를 알려줘"</strong>라고 하면 완벽한 답이 나오죠. AI도 똑같아요. 질문을 구체적으로 할수록 원하는 답이 나옵니다.</p>
+    </div>
+
+    <p class="body-text">많은 분들이 AI를 쓰고 나서 "별로 쓸모없더라"고 해요. 그런데 대부분의 경우, 문제는 AI가 아니라 <strong>프롬프트</strong>예요. 같은 AI라도 어떻게 물어보느냐에 따라 결과물의 품질이 완전히 달라집니다.</p>
+  </section>
+
+  <!-- 05 프롬프트 4요소 -->
+  <section class="section" id="s5">
+    <div class="section-num">Section 05</div>
+    <h2 class="section-title">프롬프트의 4요소</h2>
+
+    <p class="body-text">좋은 프롬프트에는 4가지 요소가 있어요. 이 4가지를 모두 넣을수록 결과물이 좋아집니다. 처음엔 어렵게 느껴질 수 있지만, 연습하다 보면 자연스럽게 몸에 배어요.</p>
+
+    <div class="prompt-elements">
+      <div class="prompt-el">
+        <div class="prompt-el-left">
+          <div class="prompt-el-num">01</div>
+          <div class="prompt-el-name">역할</div>
+          <div class="prompt-el-name-en">Role</div>
+        </div>
+        <div class="prompt-el-right">
+          <p class="prompt-el-desc">AI에게 어떤 전문가처럼 행동하라고 지정해주는 요소예요. 역할을 주지 않으면 AI는 "평범한 사람"으로 답하지만, 역할을 주면 그 관점에서 훨씬 전문적인 답이 나와요.</p>
+          <div class="analogy" style="margin:0.5rem 0 0;">
+            <div class="analogy-label">🎭 비유 — 배우</div>
+            <p>AI는 어떤 역할이든 연기할 수 있는 배우예요. 역할 지정이 없으면 그냥 엑스트라지만, 역할을 주면 주연배우로 바뀝니다.</p>
+          </div>
+          <p class="prompt-el-example" style="margin-top:0.6rem;">예: <span>"너는 B2B 스타트업에서 10년 일한 마케팅 전문가야."</span></p>
+        </div>
+      </div>
+
+      <div class="prompt-el">
+        <div class="prompt-el-left">
+          <div class="prompt-el-num">02</div>
+          <div class="prompt-el-name">맥락</div>
+          <div class="prompt-el-name-en">Context</div>
+        </div>
+        <div class="prompt-el-right">
+          <p class="prompt-el-desc">배경 정보를 충분히 줄수록 AI가 훨씬 정확하게 답해요. 나의 상황, 회사, 독자, 목적 등을 알려주세요.</p>
+          <div class="analogy" style="margin:0.5rem 0 0;">
+            <div class="analogy-label">🗺️ 비유 — 내비게이션</div>
+            <p>내비게이션한테 "빨리 가줘"라고만 하면 어디로 가야 할지 몰라요. 출발지, 목적지, 현재 상황을 줘야 최적 경로가 나오죠.</p>
+          </div>
+          <p class="prompt-el-example" style="margin-top:0.6rem;">예: <span>"우리 회사는 공유오피스를 운영하는 스타트업이고, 독자는 입주사 담당자야."</span></p>
+        </div>
+      </div>
+
+      <div class="prompt-el">
+        <div class="prompt-el-left">
+          <div class="prompt-el-num">03</div>
+          <div class="prompt-el-name">지시</div>
+          <div class="prompt-el-name-en">Instruction</div>
+        </div>
+        <div class="prompt-el-right">
+          <p class="prompt-el-desc">원하는 것을 애매하게 말하지 말고 구체적으로 지정해요. "정리해줘"보다 "이 3가지 기준으로 정리해줘"가 훨씬 좋은 결과를 만들어요.</p>
+          <div class="analogy" style="margin:0.5rem 0 0;">
+            <div class="analogy-label">📋 비유 — 카페 주문</div>
+            <p>"커피 주세요"보다 "아이스 아메리카노, 샷 추가, 시럽 빼고"처럼 구체적으로 말해야 원하는 게 나오죠.</p>
+          </div>
+          <p class="prompt-el-example" style="margin-top:0.6rem;">예: <span>"온보딩 안내 이메일을 써줘. ① 환영 인사 ② 시설 안내 ③ 담당자 연락처 포함해서."</span></p>
+        </div>
+      </div>
+
+      <div class="prompt-el">
+        <div class="prompt-el-left">
+          <div class="prompt-el-num">04</div>
+          <div class="prompt-el-name">출력형식</div>
+          <div class="prompt-el-name-en">Output Format</div>
+        </div>
+        <div class="prompt-el-right">
+          <p class="prompt-el-desc">결과물의 형태를 미리 정해주면 바로 쓸 수 있는 형식으로 나와요. 길이, 구조, 문체, 형식을 지정해보세요.</p>
+          <div class="analogy" style="margin:0.5rem 0 0;">
+            <div class="analogy-label">🖨️ 비유 — 프린터 설정</div>
+            <p>같은 문서도 A4로 뽑을지, 명함 크기로 뽑을지에 따라 완전히 달라지죠. 출력형식 지정은 AI한테 "이런 모양으로 뽑아줘"라고 말하는 거예요.</p>
+          </div>
+          <p class="prompt-el-example" style="margin-top:0.6rem;">예: <span>"bullet point 5개로, 각 항목은 2줄 이내, 200자 내외로 작성해줘."</span></p>
+        </div>
+      </div>
+    </div>
+
+    <h3>4요소를 모두 합치면?</h3>
+    <p class="body-text">아래는 4요소를 모두 넣은 완성형 프롬프트예요.</p>
+
+    <div class="prompt-block">너는 10년 경력의 HR 전문가야. <span class="anno">← 역할</span>
+우리 회사(패스트파이브)는 공유오피스를 운영하는 스타트업이고, 이번에 신규 입주사가 들어와. <span class="anno">← 맥락</span>
+신규 입주사 담당자에게 보내는 첫 번째 온보딩 안내 이메일을 작성해줘. <span class="anno">← 지시</span>
+내용에는 ① 환영 인사 ② 주요 시설 안내 ③ 담당 매니저 연락처 포함, 톤은 따뜻하고 전문적으로, 200자 이내로 작성해줘. <span class="anno">← 출력형식</span></div>
+
+    <h3>결과가 마음에 안 들 때는?</h3>
+    <p class="body-text">AI는 대화를 기억하기 때문에 처음부터 완벽하지 않아도 괜찮아요. 계속 다듬어가는 것이 핵심이에요.</p>
+    <ul class="point-list" style="background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:1rem 1.25rem;">
+      <li>"더 간결하게 다시 써줘"</li>
+      <li>"좀 더 친근한 톤으로 바꿔줘"</li>
+      <li>"bullet point 대신 표 형식으로 바꿔줘"</li>
+      <li>"두 번째 항목을 더 구체적으로 설명해줘"</li>
+      <li>"이 내용을 유지하면서 길이를 절반으로 줄여줘"</li>
+    </ul>
+  </section>
+
+  <!-- 06 좋은 vs 나쁜 프롬프트 -->
+  <section class="section" id="s6">
+    <div class="section-num">Section 06</div>
+    <h2 class="section-title">좋은 프롬프트 vs 나쁜 프롬프트</h2>
+
+    <p class="body-text">실제 예시를 통해 차이를 직접 느껴보세요.</p>
+
+    <h3>예시 1 — 보고서 작성</h3>
+    <div class="compare-pair">
+      <div class="compare-bad">
+        <div class="compare-tag">❌ 나쁜 프롬프트</div>
+        <div class="compare-prompt">보고서 써줘</div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-tag">✅ 좋은 프롬프트</div>
+        <div class="compare-prompt">너는 기업 전략 컨설턴트야.<br>공유오피스 시장의 2026년 트렌드를 분석하는 보고서 초안을 작성해줘.<br>독자는 사내 임원이고, 배경·현황·시사점 3가지 섹션으로 구성해줘.<br>각 섹션은 3줄 이내로 간결하게 작성해줘.</div>
+      </div>
+    </div>
+
+    <h3>예시 2 — 이메일 작성</h3>
+    <div class="compare-pair">
+      <div class="compare-bad">
+        <div class="compare-tag">❌ 나쁜 프롬프트</div>
+        <div class="compare-prompt">이메일 써줘</div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-tag">✅ 좋은 프롬프트</div>
+        <div class="compare-prompt">너는 친절하고 전문적인 비즈니스 커뮤니케이터야.<br>우리 회사(패스트파이브)는 공유오피스를 운영하고 있어.<br>신규 입주사 담당자에게 보내는 첫 번째 온보딩 안내 이메일을 작성해줘.<br>① 환영 인사 ② 주요 시설 안내 ③ 담당 매니저 연락처 포함, 200자 이내로.</div>
+      </div>
+    </div>
+
+    <h3>예시 3 — 회의록 요약</h3>
+    <div class="compare-pair">
+      <div class="compare-bad">
+        <div class="compare-tag">❌ 나쁜 프롬프트</div>
+        <div class="compare-prompt">회의록 요약해줘</div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-tag">✅ 좋은 프롬프트</div>
+        <div class="compare-prompt">너는 꼼꼼한 비서야.<br>아래 회의 내용을 읽고<br>① 주요 결정사항 ② 액션 아이템 ③ 다음 회의 안건<br>세 가지로 나눠서 bullet point로, 각 항목 2줄 이내로 정리해줘.<br><br>[회의 내용 붙여넣기]</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 질문 리스트 -->
+  <section class="section" id="s7">
+    <div class="section-num">Section 07</div>
+    <h2 class="section-title">Gemini로 프롬프트를 공부하는 질문 리스트</h2>
+
+    <p class="body-text">아래 질문들을 Gemini에 직접 입력해보세요. 답변을 읽으면서 자연스럽게 프롬프트 감각을 익힐 수 있어요.</p>
+
+    <div class="question-group">
+      <div class="question-group-title">🔹 개념 이해용</div>
+      <ul class="question-list">
+        <li>프롬프트 엔지니어링이 뭔지 초등학생도 이해할 수 있게 설명해줘</li>
+        <li>LLM이 답변을 생성하는 원리를 쉽고 재미있게 설명해줘</li>
+        <li>AI한테 좋은 질문을 하려면 어떤 요소가 필요해? 예시도 같이 보여줘</li>
+        <li>프롬프트에서 역할 지정이 왜 중요해? 역할 있을 때와 없을 때 결과를 비교해서 보여줘</li>
+      </ul>
+    </div>
+
+    <div class="question-group">
+      <div class="question-group-title">🔹 비교 체험용 — 직접 차이를 느껴보세요</div>
+      <p class="body-text" style="margin-bottom:0.6rem;">먼저 이렇게 입력해보세요:</p>
+      <div class="prompt-block">회의록 요약해줘</div>
+      <p class="body-text" style="margin:0.6rem 0;">그 다음 이렇게 입력해보세요:</p>
+      <div class="prompt-block">너는 꼼꼼한 비서야. 아래 회의 내용을 읽고 ① 주요 결정사항 ② 액션 아이템 ③ 다음 회의 안건으로 나눠서 요약해줘. 각 항목은 bullet point로, 2줄 이내로 써줘.
+
+[회의 내용 붙여넣기]</div>
+      <p class="body-text">두 결과를 직접 비교해보세요. 차이가 느껴지나요?</p>
+    </div>
+
+    <div class="question-group">
+      <div class="question-group-title">🔹 프롬프트 개선 실습용</div>
+      <ul class="question-list">
+        <li>내가 쓴 이 프롬프트의 문제점이 뭐야? 더 좋은 버전으로 바꿔줘 → [내 프롬프트 입력]</li>
+        <li>이 프롬프트에 역할, 맥락, 지시, 출력형식을 추가해서 개선해줘 → [내 프롬프트 입력]</li>
+        <li>같은 목적의 프롬프트를 3가지 다른 방식으로 작성해줘 → [목적 입력]</li>
+      </ul>
+    </div>
+
+    <div class="question-group">
+      <div class="question-group-title">🔹 업무 적용 탐색용</div>
+      <ul class="question-list">
+        <li>내가 공유오피스 회사의 [내 직무]인데, AI를 활용할 수 있는 업무 상황 10가지를 알려줘</li>
+        <li>이메일 초안 작성에 쓸 수 있는 프롬프트 템플릿을 만들어줘</li>
+        <li>회의 준비할 때 AI를 어떻게 활용하면 좋을지 구체적인 방법을 알려줘</li>
+      </ul>
+    </div>
+
+    <div class="question-group">
+      <div class="question-group-title">🔹 한계 탐색용 — AI를 맹신하지 않기 위해</div>
+      <ul class="question-list">
+        <li>너는 틀린 답변을 할 수도 있어? 어떤 상황에서 그래?</li>
+        <li>할루시네이션이 뭐야? 내가 조심해야 할 상황을 알려줘</li>
+        <li>네가 잘 못하는 것, 쓰면 안 되는 상황이 뭐야?</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 이번 주 미션 -->
+  <section class="section" style="margin-bottom:2rem;">
+    <div class="section-num">이번 주 미션</div>
+    <h2 class="section-title">오늘부터 이것만 하세요</h2>
+    <ul class="checklist">
+      <li><div class="check-box"></div>내 업무 상황에 맞는 프롬프트를 4요소를 포함해서 1개 작성해보기</li>
+      <li><div class="check-box"></div>교육 전 나쁜 프롬프트로 뽑았던 결과와 비교해보기</li>
+      <li><div class="check-box"></div>작성한 프롬프트와 결과물을 슬랙 채널에 공유하기</li>
+    </ul>
+  </section>
+
+  <!-- 푸터 -->
+  <div class="doc-footer">
+    <div class="doc-footer-logo">FF <em>Academy</em> · 2026</div>
+    <div class="doc-footer-note">AI 활용 교육 (Gemini 기초) 1주차 학습자료</div>
+  </div>
+
+</div>
+</body>
+</html>
