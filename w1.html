@@ -616,6 +616,7 @@
     <a class="toc-btn" id="btn-s5" href="#s5" title="프롬프트의 4요소">05</a>
     <a class="toc-btn" id="btn-s6" href="#s6" title="좋은 vs 나쁜 프롬프트">06</a>
     <a class="toc-btn" id="btn-s7" href="#s7" title="Gemini 질문 리스트">07</a>
+    <a class="toc-btn" id="btn-s8" href="#s8" title="Gemini 모드 3가지 차이점">08</a>
   </nav>
 
   <!-- 01 AI란 -->
@@ -651,7 +652,7 @@
     <h3>① 엄청난 양의 글을 공부했어요</h3>
     <p class="body-text">인터넷에 있는 뉴스, 책, 논문, 블로그, 위키피디아 등 수천억 개의 문장을 학습했어요. 사람이 평생 읽어도 다 못 읽을 양이에요. 덕분에 거의 모든 주제에 대해 그럴듯한 답변을 만들어낼 수 있어요.</p>
 
-    <h3>② AI의 답변은 "확률"을 통해 "다음 단어"를 예측하는 방식으로 작동해요</h3>
+    <h3>② AI의 답변은 "확률"로 작동해요</h3>
 
     <div class="analogy">
       <div class="analogy-label">🎲 비유로 이해하기 — 확률 게임</div>
@@ -775,10 +776,10 @@
         </tr>
         <tr class="highlight-row">
           <td class="label-col">유료 구독</td>
-          <td>Gemini Advanced<br><strong>월 ₩11,000~</strong><br><small style="font-style:normal;">(Gemini AI Plus~)</small></td>
-          <td>ChatGPT Plus<br><strong>월 ₩13,000~</strong><br><small style="font-style:normal;">(Chat GPT Go)</small></td>
-          <td>Perplexity Pro<br><strong>월 $18~</strong><br><small style="font-style:normal;">(Computer 접근권한)</small></td>
-          <td>Claude Pro<br><strong>월 $19~</strong><br><small style="font-style:normal;">(사용량 5배·우선 접속)</small></td>
+          <td>Gemini Advanced<br><strong>월 $19.99~</strong><br><small style="font-style:normal;">(Google One AI Premium)</small></td>
+          <td>ChatGPT Plus<br><strong>월 $20~</strong><br><small style="font-style:normal;">(GPT-4o 무제한 등)</small></td>
+          <td>Perplexity Pro<br><strong>월 $20~</strong><br><small style="font-style:normal;">(무제한 검색·파일 업로드)</small></td>
+          <td>Claude Pro<br><strong>월 $20~</strong><br><small style="font-style:normal;">(사용량 5배·우선 접속)</small></td>
         </tr>
       </tbody>
     </table>
@@ -787,7 +788,7 @@
       <div class="point-box-title">💡 유료 구독, 꼭 해야 하나요?</div>
       <ul class="point-list">
         <li>무료 플랜도 기본 업무 활용엔 충분해요. 먼저 무료로 써보고 필요하면 업그레이드하세요.</li>
-        <li>우리 교육은 <strong>무료 플랜 기준</strong>으로 진행해요. GWS 구독을 통해 Gemini를 이미 사용할 수 있어요.</li>
+        <li>우리 교육은 <strong>Gemini</strong>로 진행해요. GWS 구독을 통해 Gemini Pro를 이미 사용할 수 있어요.</li>
         <li>유료 플랜의 핵심 차이는 응답 속도, 사용량 한도, 최신 모델 접근 여부예요.</li>
       </ul>
     </div>
@@ -820,22 +821,22 @@
   <!-- 05 프롬프트 4요소 -->
   <section class="section" id="s5">
     <div class="section-num">Section 05</div>
-    <h2 class="section-title">프롬프트의 4요소</h2>
+    <h2 class="section-title">프롬프트의 4요소 (Google 가이드 기준)</h2>
 
-    <p class="body-text">좋은 프롬프트에는 4가지 요소가 있어요. 이 4가지를 모두 넣을수록 결과물이 좋아집니다. 처음엔 어렵게 느껴질 수 있지만, 연습하다 보면 자연스럽게 몸에 배어요.</p>
+    <p class="body-text">Google이 제시한 프롬프트 설계 프레임워크예요. <strong>Persona · Task · Context · Format</strong> 4가지를 갖출수록 결과물이 좋아집니다. 처음엔 어렵게 느껴질 수 있지만, 연습하다 보면 자연스럽게 몸에 배어요.</p>
 
     <div class="prompt-elements">
       <div class="prompt-el">
         <div class="prompt-el-left">
           <div class="prompt-el-num">01</div>
-          <div class="prompt-el-name">역할</div>
-          <div class="prompt-el-name-en">Role</div>
+          <div class="prompt-el-name">Persona</div>
+          <div class="prompt-el-name-en">역할</div>
         </div>
         <div class="prompt-el-right">
-          <p class="prompt-el-desc">AI에게 어떤 전문가처럼 행동하라고 지정해주는 요소예요. 역할을 주지 않으면 AI는 "평범한 사람"으로 답하지만, 역할을 주면 그 관점에서 훨씬 전문적인 답이 나와요.</p>
+          <p class="prompt-el-desc">AI에게 어떤 전문가처럼 행동하라고 지정해주는 요소예요. Persona를 주지 않으면 AI는 "평범한 사람"으로 답하지만, Persona를 주면 그 관점에서 훨씬 전문적인 답이 나와요.</p>
           <div class="analogy" style="margin:0.5rem 0 0;">
             <div class="analogy-label">🎭 비유 — 배우</div>
-            <p>AI는 어떤 역할이든 연기할 수 있는 배우예요. 역할 지정이 없으면 그냥 엑스트라지만, 역할을 주면 주연배우로 바뀝니다.</p>
+            <p>AI는 어떤 역할이든 연기할 수 있는 배우예요. Persona 지정이 없으면 그냥 엑스트라지만, 역할을 주면 주연배우로 바뀝니다.</p>
           </div>
           <p class="prompt-el-example" style="margin-top:0.6rem;">
             <span style="display:block;margin-bottom:0.3rem;">"너는 B2B 스타트업에서 10년 일한 마케팅 전문가야."</span>
@@ -849,32 +850,11 @@
       <div class="prompt-el">
         <div class="prompt-el-left">
           <div class="prompt-el-num">02</div>
-          <div class="prompt-el-name">맥락</div>
-          <div class="prompt-el-name-en">Context</div>
+          <div class="prompt-el-name">Task</div>
+          <div class="prompt-el-name-en">작업</div>
         </div>
         <div class="prompt-el-right">
-          <p class="prompt-el-desc">배경 정보를 충분히 줄수록 AI가 훨씬 정확하게 답해요. 나의 상황, 회사, 독자, 목적 등을 알려주세요.</p>
-          <div class="analogy" style="margin:0.5rem 0 0;">
-            <div class="analogy-label">🗺️ 비유 — 내비게이션</div>
-            <p>내비게이션한테 "빨리 가줘"라고만 하면 어디로 가야 할지 몰라요. 출발지, 목적지, 현재 상황을 줘야 최적 경로가 나오죠.</p>
-          </div>
-          <p class="prompt-el-example" style="margin-top:0.6rem;">
-            <span style="display:block;margin-bottom:0.3rem;">"우리 회사는 공유오피스를 운영하는 스타트업이고, 독자는 입주사 담당자야."</span>
-            <span style="display:block;margin-bottom:0.3rem;">"나는 지점 운영팀 매니저고, 이번 주 내로 보고서를 제출해야 해."</span>
-            <span style="display:block;margin-bottom:0.3rem;">"상대방은 IT에 익숙하지 않은 50대 임원이야."</span>
-            <span style="display:block;">"지금까지 작성한 내용은 이거야: [내용 붙여넣기]"</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="prompt-el">
-        <div class="prompt-el-left">
-          <div class="prompt-el-num">03</div>
-          <div class="prompt-el-name">지시</div>
-          <div class="prompt-el-name-en">Instruction</div>
-        </div>
-        <div class="prompt-el-right">
-          <p class="prompt-el-desc">원하는 것을 애매하게 말하지 말고 구체적으로 지정해요. "정리해줘"보다 "이 3가지 기준으로 정리해줘"가 훨씬 좋은 결과를 만들어요.</p>
+          <p class="prompt-el-desc">원하는 것을 애매하게 말하지 말고 구체적으로 지정해요. Task가 명확할수록 AI가 엉뚱한 방향으로 가지 않아요. "해줘"보다 "이 3가지 기준으로 정리해줘"가 훨씬 좋은 결과를 만들어요.</p>
           <div class="analogy" style="margin:0.5rem 0 0;">
             <div class="analogy-label">📋 비유 — 카페 주문</div>
             <p>"커피 주세요"보다 "아이스 아메리카노, 샷 추가, 시럽 빼고"처럼 구체적으로 말해야 원하는 게 나오죠.</p>
@@ -890,15 +870,36 @@
 
       <div class="prompt-el">
         <div class="prompt-el-left">
-          <div class="prompt-el-num">04</div>
-          <div class="prompt-el-name">출력형식</div>
-          <div class="prompt-el-name-en">Output Format</div>
+          <div class="prompt-el-num">03</div>
+          <div class="prompt-el-name">Context</div>
+          <div class="prompt-el-name-en">맥락</div>
         </div>
         <div class="prompt-el-right">
-          <p class="prompt-el-desc">결과물의 형태를 미리 정해주면 바로 쓸 수 있는 형식으로 나와요. 길이, 구조, 문체, 형식을 지정해보세요.</p>
+          <p class="prompt-el-desc">배경 정보를 충분히 줄수록 AI가 훨씬 정확하게 답해요. 나의 상황, 회사, 독자, 목적 등을 알려주세요. Context가 풍부할수록 AI는 내 상황에 딱 맞는 답을 만들어낼 수 있어요.</p>
+          <div class="analogy" style="margin:0.5rem 0 0;">
+            <div class="analogy-label">🗺️ 비유 — 내비게이션</div>
+            <p>내비게이션한테 "빨리 가줘"라고만 하면 어디로 가야 할지 몰라요. 출발지, 목적지, 현재 상황을 줘야 최적 경로가 나오죠.</p>
+          </div>
+          <p class="prompt-el-example" style="margin-top:0.6rem;">
+            <span style="display:block;margin-bottom:0.3rem;">"우리 회사는 공유오피스를 운영하는 스타트업이고, 독자는 입주사 담당자야."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"나는 지점 운영팀 매니저고, 이번 주 내로 보고서를 제출해야 해."</span>
+            <span style="display:block;margin-bottom:0.3rem;">"상대방은 IT에 익숙하지 않은 50대 임원이야."</span>
+            <span style="display:block;">"지금까지 작성한 내용은 이거야: [내용 붙여넣기]"</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="prompt-el">
+        <div class="prompt-el-left">
+          <div class="prompt-el-num">04</div>
+          <div class="prompt-el-name">Format</div>
+          <div class="prompt-el-name-en">출력형식</div>
+        </div>
+        <div class="prompt-el-right">
+          <p class="prompt-el-desc">결과물의 형태를 미리 정해주면 바로 쓸 수 있는 형식으로 나와요. 길이, 구조, 문체, 형식을 지정해보세요. Format을 빼면 AI가 알아서 형식을 정하는데, 원하는 형태가 아닐 수 있어요.</p>
           <div class="analogy" style="margin:0.5rem 0 0;">
             <div class="analogy-label">🖨️ 비유 — 프린터 설정</div>
-            <p>같은 문서도 A4로 뽑을지, 명함 크기로 뽑을지에 따라 완전히 달라지죠. 출력형식 지정은 AI한테 "이런 모양으로 뽑아줘"라고 말하는 거예요.</p>
+            <p>같은 문서도 A4로 뽑을지, 명함 크기로 뽑을지에 따라 완전히 달라지죠. Format 지정은 AI한테 "이런 모양으로 뽑아줘"라고 말하는 거예요.</p>
           </div>
           <p class="prompt-el-example" style="margin-top:0.6rem;">
             <span style="display:block;margin-bottom:0.3rem;">"bullet point 5개로, 각 항목은 2줄 이내, 200자 내외로 작성해줘."</span>
@@ -911,12 +912,12 @@
     </div>
 
     <h3>4요소를 모두 합치면?</h3>
-    <p class="body-text">아래는 4요소를 모두 넣은 완성형 프롬프트예요.</p>
+    <p class="body-text">아래는 Persona · Task · Context · Format을 모두 넣은 완성형 프롬프트예요.</p>
 
-    <div class="prompt-block">너는 10년 경력의 HR 전문가야. <span class="anno">← 역할</span>
-우리 회사(패스트파이브)는 공유오피스를 운영하는 스타트업이고, 이번에 신규 입주사가 들어와. <span class="anno">← 맥락</span>
-신규 입주사 담당자에게 보내는 첫 번째 온보딩 안내 이메일을 작성해줘. <span class="anno">← 지시</span>
-내용에는 ① 환영 인사 ② 주요 시설 안내 ③ 담당 매니저 연락처 포함, 톤은 따뜻하고 전문적으로, 200자 이내로 작성해줘. <span class="anno">← 출력형식</span></div>
+    <div class="prompt-block">너는 10년 경력의 HR 전문가야. <span class="anno">← Persona (역할)</span>
+신규 입주사 담당자에게 보내는 첫 번째 온보딩 안내 이메일을 작성해줘. <span class="anno">← Task (작업)</span>
+우리 회사(패스트파이브)는 공유오피스를 운영하는 스타트업이고, 이번에 신규 입주사가 들어와. <span class="anno">← Context (맥락)</span>
+내용에는 ① 환영 인사 ② 주요 시설 안내 ③ 담당 매니저 연락처 포함, 톤은 따뜻하고 전문적으로, 200자 이내로 작성해줘. <span class="anno">← Format (출력형식)</span></div>
 
     <h3>결과가 마음에 안 들 때는?</h3>
     <p class="body-text">AI는 대화를 기억하기 때문에 처음부터 완벽하지 않아도 괜찮아요. 계속 다듬어가는 것이 핵심이에요.</p>
@@ -944,7 +945,7 @@
       </div>
       <div class="compare-good">
         <div class="compare-tag">✅ 좋은 프롬프트</div>
-        <div class="compare-prompt">너는 기업 전략 컨설턴트야. <span class="anno">← 역할</span><br>우리 회사는 공유오피스를 운영하고 있고, 독자는 사내 임원이야. <span class="anno">← 맥락</span><br>공유오피스 시장의 2026년 트렌드를 분석하는 보고서 초안을 작성해줘. <span class="anno">← 지시</span><br>배경·현황·시사점 3가지 섹션으로, 각 섹션은 3줄 이내로 간결하게 작성해줘. <span class="anno">← 출력형식</span></div>
+        <div class="compare-prompt">너는 기업 전략 컨설턴트야. <span class="anno">← Persona</span><br>공유오피스 시장의 2026년 트렌드를 분석하는 보고서 초안을 작성해줘. <span class="anno">← Task</span><br>우리 회사는 공유오피스를 운영하고 있고, 독자는 사내 임원이야. <span class="anno">← Context</span><br>배경·현황·시사점 3가지 섹션으로, 각 섹션은 3줄 이내로 간결하게 작성해줘. <span class="anno">← Format</span></div>
       </div>
     </div>
 
@@ -956,7 +957,7 @@
       </div>
       <div class="compare-good">
         <div class="compare-tag">✅ 좋은 프롬프트</div>
-        <div class="compare-prompt">너는 친절하고 전문적인 비즈니스 커뮤니케이터야. <span class="anno">← 역할</span><br>우리 회사(패스트파이브)는 공유오피스를 운영하고 있고, 신규 입주사가 다음 주부터 들어와. <span class="anno">← 맥락</span><br>신규 입주사 담당자에게 보내는 첫 번째 온보딩 안내 이메일을 작성해줘. <span class="anno">← 지시</span><br>① 환영 인사 ② 주요 시설 안내 ③ 담당 매니저 연락처 포함, 톤은 따뜻하게, 200자 이내로. <span class="anno">← 출력형식</span></div>
+        <div class="compare-prompt">너는 친절하고 전문적인 비즈니스 커뮤니케이터야. <span class="anno">← Persona</span><br>신규 입주사 담당자에게 보내는 첫 번째 온보딩 안내 이메일을 작성해줘. <span class="anno">← Task</span><br>우리 회사(패스트파이브)는 공유오피스를 운영하고 있고, 신규 입주사가 다음 주부터 들어와. <span class="anno">← Context</span><br>① 환영 인사 ② 주요 시설 안내 ③ 담당 매니저 연락처 포함, 톤은 따뜻하게, 200자 이내로. <span class="anno">← Format</span></div>
       </div>
     </div>
 
@@ -1057,13 +1058,124 @@
   <hr class="divider">
 
   <!-- 이번 주 미션 -->
-  <section class="section" style="margin-bottom:2rem;">
-    <div class="section-num">이번 주 미션</div>
-    <h2 class="section-title">오늘부터 이것만 하세요</h2>
+  <!-- 08 Gemini 모드 3가지 -->
+  <section class="section" id="s8">
+    <div class="section-num">Section 08</div>
+    <h2 class="section-title">Gemini 모드 3가지 — Flash · Pro · 사고 모드</h2>
+
+    <p class="body-text">Gemini를 열면 상단에 모드를 선택할 수 있어요. <strong>어떤 모드를 쓰느냐에 따라 답변의 속도와 깊이가 달라집니다.</strong> 처음엔 어떤 걸 써야 할지 헷갈릴 수 있는데, 개념만 알면 자연스럽게 골라 쓸 수 있어요.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">🚗 비유로 이해하기 — 자동차 드라이브 모드</div>
+      <p>Flash는 시내 주행 모드 — 빠르고 효율적, 일상에서 가장 자주 써요.<br>
+      Pro는 고속도로 모드 — 조금 더 힘을 쓰지만 더 멀리, 더 정확하게 가요.<br>
+      사고 모드는 험지 주행 모드 — 어렵고 복잡한 길에서 진가를 발휘하지만 연료를 많이 써요.</p>
+    </div>
+
+    <!-- 3가지 모드 설명 -->
+    <div class="prompt-elements" style="margin: 1.25rem 0;">
+
+      <div class="prompt-el">
+        <div class="prompt-el-left" style="background: var(--accent);">
+          <div class="prompt-el-num" style="color:rgba(0,0,0,0.4);">MODE 1</div>
+          <div class="prompt-el-name" style="color:#1c1a16;">Flash</div>
+          <div class="prompt-el-name-en" style="color:rgba(0,0,0,0.45);">빠른 모드</div>
+        </div>
+        <div class="prompt-el-right">
+          <p class="prompt-el-desc"><strong>속도가 가장 빠르고 일상 업무에 최적화된 모드예요.</strong> 복잡한 추론보다 즉각적인 답변이 필요할 때 써요. 사용량 소모도 가장 적어서 자유롭게 쓸 수 있어요.</p>
+          <p class="prompt-el-example" style="margin-top:0.5rem;">
+            <span>이럴 때 써요:</span> 이메일 초안 작성 / 번역 / 간단한 요약 / 빠른 아이디어 발산 / 일상적인 질문·답변
+          </p>
+        </div>
+      </div>
+
+      <div class="prompt-el">
+        <div class="prompt-el-left" style="background: var(--navy);">
+          <div class="prompt-el-num" style="color:rgba(255,255,255,0.4);">MODE 2</div>
+          <div class="prompt-el-name">Pro</div>
+          <div class="prompt-el-name-en">정밀 모드</div>
+        </div>
+        <div class="prompt-el-right">
+          <p class="prompt-el-desc"><strong>Flash보다 느리지만 더 정확하고 깊이 있는 답변을 만들어내요.</strong> 긴 문서를 다루거나 논리적 판단이 필요한 업무에 적합해요. 결과물의 완성도가 중요할 때 사용하세요.</p>
+          <p class="prompt-el-example" style="margin-top:0.5rem;">
+            <span>이럴 때 써요:</span> 긴 문서 분석·요약 / 보고서·기획안 작성 / 복잡한 내용 정리 / 논리적 판단이 필요한 업무
+          </p>
+        </div>
+      </div>
+
+      <div class="prompt-el">
+        <div class="prompt-el-left" style="background: #2d5016;">
+          <div class="prompt-el-num" style="color:rgba(255,255,255,0.4);">MODE 3</div>
+          <div class="prompt-el-name">사고 모드</div>
+          <div class="prompt-el-name-en">Thinking Mode</div>
+        </div>
+        <div class="prompt-el-right">
+          <p class="prompt-el-desc"><strong>답변을 생성하기 전에 스스로 생각하는 과정을 거쳐요.</strong> "이게 맞나?" 검토하고 여러 가능성을 따져본 뒤 답을 내놓기 때문에 복잡한 문제일수록 정확도가 올라가요. 단, 사용량을 많이 소모하니 꼭 필요할 때만 쓰는 게 좋아요.</p>
+          <p class="prompt-el-example" style="margin-top:0.5rem;">
+            <span>이럴 때 써요:</span> 여러 조건을 동시에 고려해야 하는 의사결정 / 꼼꼼한 검토가 필요한 분석 / 틀리면 안 되는 중요한 내용
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 비교표 -->
+    <h3>한눈에 비교</h3>
+    <table class="compare-table" style="margin: 1rem 0;">
+      <thead>
+        <tr>
+          <th style="width:90px;"></th>
+          <th>Flash</th>
+          <th>Pro</th>
+          <th>사고 모드</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-col">응답 속도</td>
+          <td>빠름</td>
+          <td>보통</td>
+          <td>느림</td>
+        </tr>
+        <tr>
+          <td class="label-col">답변 깊이</td>
+          <td>가벼움</td>
+          <td>깊음</td>
+          <td>가장 깊음</td>
+        </tr>
+        <tr>
+          <td class="label-col">사용량 소모</td>
+          <td>적음</td>
+          <td>보통</td>
+          <td>많음</td>
+        </tr>
+        <tr class="highlight-row">
+          <td class="label-col">추천 상황</td>
+          <td>일상 업무 전반</td>
+          <td>복잡한 문서·분석</td>
+          <td>어려운 추론·판단</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 실전 팁 — 어떻게 고르면 될까요?</div>
+      <ul class="point-list">
+        <li><strong>"빠른 답이 필요해"</strong> → Flash로 시작하세요. 대부분의 업무는 Flash로 충분해요.</li>
+        <li><strong>"제대로 된 결과물이 필요해"</strong> → Pro로 올리세요. 보고서·기획안처럼 완성도가 중요할 때요.</li>
+        <li><strong>"이 문제가 복잡하고 틀리면 안 돼"</strong> → 사고 모드를 써보세요. 단, 사용량을 아껴서 중요한 순간에만 쓰는 게 좋아요.</li>
+        <li>Flash로 결과가 부족하다 싶으면 Pro나 사고 모드로 올리는 방식으로 단계적으로 써보세요.</li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- 이번 주 미션 -->
+    <h2 class="section-title">📝 이번주 과제</h2>
     <ul class="checklist">
-      <li><div class="check-box"></div>위 질문 리스트 중 1개를 골라 Gemini에 직접 입력해보기</li>
-      <li><div class="check-box"></div>내 업무 상황에 맞는 프롬프트를 4요소를 포함해서 1개 작성해보기</li>
-      <li><div class="check-box"></div>작성한 프롬프트와 결과물을 슬랙 #ai-edu 채널에 공유하기</li>
+      <li><div class="check-box"></div>내가 매주/매일 기계적으로 하고 있는 반복 업무 1가지를 찾아내보아요</li>
+      <li><div class="check-box"></div>그 업무를 AI가 대신 처리할 수 있도록 나만의 맞춤형 Gem/프롬프트를 만들어보세요</li>
+      <li><div class="check-box"></div>결과물을 슬랙 채널에 공유해주세요</li>
     </ul>
   </section>
 
@@ -1076,7 +1188,7 @@
 </div>
 
 <script>
-  const sections = ['s1','s2','s3','s4','s5','s6','s7'];
+  const sections = ['s1','s2','s3','s4','s5','s6','s7','s8'];
 
   // 클릭 시 부드럽게 스크롤 (sticky bar 높이 보정)
   document.querySelectorAll('.toc-btn').forEach(btn => {
