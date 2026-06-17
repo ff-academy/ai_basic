@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3주차 학습자료 | Gemini 핵심 기능 익히기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f9f7f2;
+    --surface: #ffffff;
+    --border: #e8e4da;
+    --border2: #d4cfc3;
+    --text-primary: #1c1a16;
+    --text-secondary: #4a4740;
+    --text-muted: #8a8780;
+    --accent: #c9a227;
+    --accent-dim: rgba(201,162,39,0.10);
+    --accent-dim2: rgba(201,162,39,0.05);
+    --navy: #1e2d4a;
+    --navy-dim: rgba(30,45,74,0.07);
+    --serif: 'Noto Serif KR', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* ── 페이지 레이아웃 ── */
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+
+  /* ── 상단 헤더 ── */
+  .doc-header {
+    border-bottom: 2px solid var(--text-primary);
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .doc-label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .doc-title {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+
+  .doc-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  /* ── 목차 네비바 ── */
+  html { scroll-behavior: smooth; }
+
+  .toc-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(249,247,242,0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.55rem 2rem;
+    margin: 0 -2rem 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .toc-bar::-webkit-scrollbar { display: none; }
+
+  .toc-bar-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+    margin-right: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  .toc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    background: transparent;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.18s;
+    text-decoration: none;
+  }
+
+  .toc-btn:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+    background: var(--navy-dim);
+  }
+
+  .toc-btn.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: #fff;
+  }
+
+  /* ── 섹션 ── */
+  .section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .section-num {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: -0.2rem 0 1.25rem;
+  }
+
+  /* ── 본문 텍스트 ── */
+  .body-text {
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+
+  .body-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ── 비유 박스 ── */
+  .analogy {
+    background: var(--accent-dim2);
+    border: 1px solid rgba(201,162,39,0.2);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .analogy-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .analogy p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  /* ── 경고 박스 ── */
+  .warning {
+    background: #fff8f0;
+    border: 1px solid rgba(200,80,30,0.2);
+    border-left: 3px solid #c8501e;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .warning-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c8501e;
+    margin-bottom: 0.4rem;
+  }
+
+  .warning p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  /* ── 포인트 박스 ── */
+  .point-box {
+    background: var(--navy-dim);
+    border: 1px solid rgba(30,45,74,0.12);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 6px;
+  }
+
+  .point-box-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .point-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .point-list li {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    padding-left: 1.1rem;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .point-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0.3rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── 비교표 ── */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.83rem;
+  }
+
+  .compare-table th {
+    background: var(--navy);
+    color: #fff;
+    padding: 0.7rem 0.85rem;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-align: left;
+    border: 1px solid var(--navy);
+  }
+
+  .compare-table th:first-child { width: 100px; }
+
+  .compare-table td {
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+    line-height: 1.65;
+  }
+
+  .compare-table tr:nth-child(even) td { background: var(--navy-dim); }
+
+  .compare-table .highlight-row td {
+    background: var(--accent-dim);
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .compare-table .label-col {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+  }
+
+  /* ── 기능 카드 (가로 분할형, 4요소 재사용) ── */
+  .feature-elements {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1.25rem 0;
+  }
+
+  .feature-el {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .feature-el:last-child { border-bottom: none; }
+
+  .feature-el-left {
+    background: var(--navy);
+    padding: 1.1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .feature-el-num {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+  }
+
+  .feature-el-name {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .feature-el-name-en {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.1rem;
+    font-family: var(--sans);
+    font-weight: 400;
+  }
+
+  .feature-el-right {
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+  }
+
+  .feature-el-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-el-example {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .feature-el-example span {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  /* ── Before/After 비교 ── */
+  .compare-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .compare-bad {
+    background: #fff5f5;
+    border: 1px solid rgba(200,50,50,0.18);
+    border-top: 3px solid #dc3535;
+    padding: 0.9rem 1rem;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .compare-good {
+    background: #f3faf5;
+    border: 1px solid rgba(30,140,70,0.18);
+    border-top: 3px solid #1e8c46;
+    padding: 0.9rem 1rem;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .compare-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .compare-bad .compare-tag { color: #dc3535; }
+  .compare-good .compare-tag { color: #1e8c46; }
+
+  .compare-prompt {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    font-family: var(--sans);
+  }
+
+  .compare-prompt .anno {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ── 코드 스타일 인라인 ── */
+  .prompt-block {
+    background: #f4f2ec;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+
+  .prompt-block .anno {
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.78rem;
+  }
+
+  /* ── 질문/팁 리스트 ── */
+  .question-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .question-group-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .question-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .question-list li {
+    font-size: 0.87rem;
+    color: var(--text-secondary);
+    padding: 0.55rem 0.9rem 0.55rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    position: relative;
+    line-height: 1.65;
+  }
+
+  .question-list li::before {
+    content: '"';
+    position: absolute;
+    left: 0.4rem;
+    top: 0.5rem;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  /* ── 강의 타임라인 ── */
+  .section-toc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  .section-toc-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .section-toc-item:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim2);
+  }
+
+  .section-toc-num {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 28px;
+  }
+
+  .section-toc-text {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .section-toc-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  /* ── 소제목 ── */
+  h3 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 1.75rem 0 0.6rem;
+  }
+
+  h4 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 1.2rem 0 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── 구분선 ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  /* ── 마무리 체크 ── */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .check-box {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border2);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* ── 푸터 ── */
+  .doc-footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .doc-footer-logo {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .doc-footer-logo em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .doc-footer-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 600px) {
+    .compare-pair { grid-template-columns: 1fr; }
+    .feature-el { grid-template-columns: 1fr; }
+    .feature-el-left { padding: 0.75rem 1rem; flex-direction: row; align-items: center; gap: 0.75rem; }
+    .compare-table { font-size: 0.75rem; }
+    .compare-table th, .compare-table td { padding: 0.5rem 0.6rem; }
+    .section-toc-sub { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 헤더 -->
+  <div class="doc-header">
+    <div class="doc-label">FF Academy · AI 활용 교육 (Gemini 기초) · 3주차 학습자료</div>
+    <h1 class="doc-title">Gemini 핵심 기능 익히기</h1>
+    <p class="doc-sub">제공드린 온라인 강의를 기반으로, 업무에 바로 적용할 수 있는 핵심만 정리했습니다.</p>
+  </div>
+
+  <!-- 상단 네비 바 -->
+  <nav class="toc-bar" id="toc-bar">
+    <span class="toc-bar-label">section</span>
+    <a class="toc-btn" id="btn-l1" href="#l1" title="1강 — Gemini 핵심기능">01</a>
+    <a class="toc-btn" id="btn-l2" href="#l2" title="2강 — Gemini 업무활용">02</a>
+    <a class="toc-btn" id="btn-l3" href="#l3" title="3강 — 설문조사 A to Z">03</a>
+    <a class="toc-btn" id="btn-l4" href="#l4" title="4강 — 보고서 작성">04</a>
+    <a class="toc-btn" id="btn-l5" href="#l5" title="5강 — 질문·문제 해결하기">05</a>
+    <a class="toc-btn" id="btn-l6" href="#l6" title="6강 — GWS 도구별 활용">06</a>
+  </nav>
+
+  <!-- 강의 목차 카드 -->
+  <div class="section-toc">
+    <a class="section-toc-item" href="#l1">
+      <span class="section-toc-num">1강</span>
+      <span class="section-toc-text">Gemini 핵심기능</span>
+      <span class="section-toc-sub">Deep Research · Gem · 구글 서비스 연동</span>
+    </a>
+    <a class="section-toc-item" href="#l2">
+      <span class="section-toc-num">2강</span>
+      <span class="section-toc-text">Gemini 업무활용</span>
+      <span class="section-toc-sub">메일·번역 · 발표준비 · 카피라이팅</span>
+    </a>
+    <a class="section-toc-item" href="#l3">
+      <span class="section-toc-num">3강</span>
+      <span class="section-toc-text">설문조사 A to Z</span>
+      <span class="section-toc-sub">문항 설계 · 결과 분석 · 보고서</span>
+    </a>
+    <a class="section-toc-item" href="#l4">
+      <span class="section-toc-num">4강</span>
+      <span class="section-toc-text">보고서 작성</span>
+      <span class="section-toc-sub">시장조사 · 리스크 · 회의록</span>
+    </a>
+    <a class="section-toc-item" href="#l5">
+      <span class="section-toc-num">5강</span>
+      <span class="section-toc-text">질문·문제 해결하기</span>
+      <span class="section-toc-sub">난이도 설정 · 멀티모달 · 조언</span>
+    </a>
+    <a class="section-toc-item" href="#l6">
+      <span class="section-toc-num">6강</span>
+      <span class="section-toc-text">GWS 도구별 활용</span>
+      <span class="section-toc-sub">Docs·Sheets·Slides · Gmail·Meet·Drive</span>
+    </a>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 1강 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="l1">
+    <div class="section-num">section 01</div>
+    <h2 class="section-title">Gemini 핵심기능</h2>
+    <p class="section-sub">Deep Research · Gem(젬) · 구글 서비스 연동</p>
+
+    <p class="body-text">이번 강의는 Gemini가 "그냥 채팅"을 넘어 <strong>업무 도구</strong>로서 어떤 기능을 갖고 있는지 살펴봐요. 3가지 핵심만 알면 됩니다.</p>
+
+    <div class="feature-elements">
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Feature 01</div>
+          <div class="feature-el-name">Deep Research</div>
+          <div class="feature-el-name-en">딥 리서치</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">주제를 입력하면 Gemini가 <strong>여러 웹사이트를 스스로 검색하고 종합해서 보고서 형태로</strong> 정리해주는 기능이에요. 사람이 하면 몇 시간 걸릴 자료조사를 몇 분 안에 초안으로 만들어줘요.</p>
+          <div class="analogy" style="margin:0.5rem 0 0;">
+            <div class="analogy-label">🔍 비유 — 인턴 연구원</div>
+            <p>"이 주제에 대해 자료 조사해서 정리해줘"라고 시키면, 인턴이 여러 사이트를 돌아다니며 자료를 모아 보고서 초안을 만들어오는 것과 같아요. 단, 인턴의 보고서이니 최종 검토는 내가 해야 해요.</p>
+          </div>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>활용 예:</span> "2026년 국내 공유오피스 시장 트렌드를 조사해서 핵심 동향 5가지와 시사점을 정리해줘"
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Feature 02</div>
+          <div class="feature-el-name">Gems (젬)</div>
+          <div class="feature-el-name-en">Custom Chatbot</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">내가 자주 쓰는 지시사항·역할·말투를 <strong>미리 설정해두고 저장</strong>할 수 있는 "나만의 맞춤 챗봇"이에요. 매번 같은 설명을 반복하지 않고, 만들어둔 Gem을 클릭만 하면 바로 그 모드로 대화할 수 있어요.</p>
+          <div class="analogy" style="margin:0.5rem 0 0;">
+            <div class="analogy-label">🤖 비유 — 전담 비서 캐릭터 만들기</div>
+            <p>"항상 정중한 톤으로 메일을 써주는 비서", "회의록을 항상 같은 형식으로 정리해주는 비서"처럼, 역할별로 비서 캐릭터를 미리 만들어두고 필요할 때 호출하는 거예요.</p>
+          </div>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>만들 수 있는 Gem 예시:</span> "이메일 작성 Gem" (항상 정중한 비즈니스 톤으로 작성) / "회의록 요약 Gem" (항상 결정사항·액션아이템·다음일정 순서로 정리)
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Feature 03</div>
+          <div class="feature-el-name">구글 서비스<br>연동</div>
+          <div class="feature-el-name-en">Google Apps</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">Gemini 채팅창에서 <strong>@ 기호로 Gmail, Docs, Drive, Calendar 등 구글 서비스를 바로 불러올 수 있어요.</strong> 다른 탭으로 이동하지 않고 대화 안에서 내 문서나 메일 내용을 참조시켜 작업할 수 있어요.</p>
+          <div class="analogy" style="margin:0.5rem 0 0;">
+            <div class="analogy-label">📎 비유 — 책상 위 서류 가져오기</div>
+            <p>회의 중에 "그 자료 좀 가져와줘"라고 하면 비서가 서류함에서 바로 꺼내오는 것처럼, @ 기호로 내 구글 문서나 메일을 채팅 중에 바로 불러올 수 있어요.</p>
+          </div>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>활용 예:</span> "@[회의록 문서명]을 참고해서 이번 주 액션 아이템만 추려줘"
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 2강 핵심 정리</div>
+      <ul class="point-list">
+        <li><strong>딥 리서치</strong> = 자료조사·보고서 초안을 자동으로 만들어주는 기능</li>
+        <li><strong>Gem</strong> = 반복되는 지시사항을 미리 설정해둔 "나만의 맞춤 챗봇"</li>
+        <li><strong>@ 연동</strong> = 채팅 중 내 구글 문서·메일을 바로 불러와 참조</li>
+        <li>이 3가지는 Gemini에서 가장 많이 활용되는 기본 도구예요</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 2강 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="l2">
+    <div class="section-num">section 02</div>
+    <h2 class="section-title">Gemini 업무활용</h2>
+    <p class="section-sub">메일 작성·번역 · 발표 준비 · 카피라이팅</p>
+
+    <p class="body-text">이번 강의는 가장 즉시 체감할 수 있는 영역이에요. <strong>매일 쓰는 메일, 가끔 해야 하는 발표 준비, 카피 문구</strong> — 이 3가지를 Gemini로 어떻게 줄일 수 있는지 살펴봐요.</p>
+
+    <h3>① 업무 활용 — 메일 작성 · 번역</h3>
+    <p class="body-text">메일은 매일 쓰지만 매번 "어떻게 시작하지?"가 고민이죠. Gemini에게 상황과 톤만 알려주면 초안을 바로 받을 수 있어요.</p>
+
+    <div class="compare-pair">
+      <div class="compare-bad">
+        <div class="compare-tag">❌ 나쁜 프롬프트</div>
+        <div class="compare-prompt">메일 써줘</div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-tag">✅ 좋은 프롬프트</div>
+        <div class="compare-prompt">너는 공유오피스 운영팀 매니저야. <span class="anno">← Persona</span><br>입주사에게 다음 달 시설 점검 일정을 안내하는 메일을 작성해줘. <span class="anno">← Task</span><br>점검 일자는 7/3(금), 점검 시간 동안 일부 공용 공간 이용이 제한돼. <span class="anno">← Context</span><br>정중하고 간결한 톤으로, 200자 이내로 작성해줘. <span class="anno">← Format</span></div>
+      </div>
+    </div>
+
+    <p class="body-text"><strong>번역</strong>도 마찬가지예요. 단순 번역기보다 Gemini가 더 좋은 이유는, <strong>맥락과 톤까지 함께 지정</strong>할 수 있기 때문이에요.</p>
+
+    <div class="prompt-block">아래 한국어 이메일을 영어로 번역해줘.
+받는 사람은 해외 파트너사 담당자고, 비즈니스 격식체로 번역해줘.
+직역하지 말고 영어 비즈니스 메일에서 자연스러운 표현으로 다듬어줘.
+
+[메일 내용 붙여넣기]</div>
+
+    <h3>② 발표 준비 — 시나리오·답변 준비</h3>
+    <p class="body-text">발표를 앞두고 가장 막막한 건 "어떤 질문이 나올지 모른다"는 거죠. Gemini에게 발표 주제와 대상을 알려주면 <strong>예상 질문과 답변을 미리 시뮬레이션</strong>할 수 있어요.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">🎤 비유 — 모의 면접관</div>
+      <p>발표 전 친구한테 "이거 들어보고 질문 좀 해줘"라고 부탁하는 것과 같아요. Gemini가 발표 대상(임원, 동료, 고객 등)의 입장에서 나올 법한 질문을 미리 만들어주고, 그 질문에 대한 답변까지 함께 준비할 수 있어요.</p>
+    </div>
+
+    <div class="prompt-block">너는 회사 임원이야.
+내가 다음 주에 "신규 입주사 온보딩 프로세스 개선안"을 발표할 예정이야.
+이 발표를 듣고 임원이 할 만한 예상 질문 5가지를 만들어줘.
+각 질문에 대해 내가 어떻게 답변하면 좋을지 답변 가이드도 함께 작성해줘.</div>
+
+    <h3>③ 카피라이팅 문구 생성</h3>
+    <p class="body-text">사내 공지, 이벤트 안내, SNS 게시글처럼 <strong>짧고 눈에 띄는 문구</strong>가 필요할 때 Gemini는 여러 버전을 빠르게 제안해줄 수 있어요. 한 번에 여러 톤으로 받아서 비교해보는 게 좋아요.</p>
+
+    <div class="prompt-block">너는 카피라이터야.
+패스트파이브 입주사 대상 "여름맞이 라운지 리프레시 이벤트" 안내 문구를 만들어줘.
+다음 3가지 톤으로 각각 1개씩 작성해줘.
+① 친근하고 발랄한 톤
+② 정중하고 격식 있는 톤
+③ 간결하고 임팩트 있는 톤
+각 문구는 30자 이내로.</div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 3강 핵심 정리</div>
+      <ul class="point-list">
+        <li><strong>메일·번역</strong> = 상황·대상·톤을 알려주면 초안이 즉시 나와요</li>
+        <li><strong>발표 준비</strong> = 예상 질문과 답변을 미리 시뮬레이션해서 긴장감을 줄여요</li>
+        <li><strong>카피라이팅</strong> = 여러 톤으로 동시에 받아서 비교 후 선택하세요</li>
+        <li>공통점: 결과를 그대로 쓰지 말고, <strong>내 상황에 맞게 한 번 더 다듬는 것</strong>이 핵심이에요</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 3강 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="l3">
+    <div class="section-num">section 03</div>
+    <h2 class="section-title">설문조사 A to Z</h2>
+    <p class="section-sub">문항 만들기 → 구글 폼즈 입력 → 결과 분석 → 보고서 작성</p>
+
+    <p class="body-text">설문조사는 <strong>"문항 설계 → 배포 → 결과 분석 → 보고서 작성"</strong>까지 전 과정에 시간이 많이 드는 업무예요. 4강에서는 이 전체 흐름을 Gemini로 어떻게 단축할 수 있는지 단계별로 봐요.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">📊 비유 — 설문조사 전담 어시스턴트</div>
+      <p>설문 목적만 말해주면, 어시스턴트가 문항 초안을 만들고, 양식에 옮겨 입력하고, 응답이 모이면 분석까지 해서 보고서로 정리해주는 흐름이에요. 사람은 중간중간 "이 문항은 빼자", "이 부분 더 자세히 봐줘" 같은 디렉션만 주면 돼요.</p>
+    </div>
+
+    <h3>① 설문조사 문항 만들기</h3>
+    <p class="body-text">설문 목적과 대상을 알려주면 <strong>문항 초안 + 응답 형식(선택형/주관식 등)</strong>까지 한 번에 받을 수 있어요.</p>
+
+    <div class="prompt-block">너는 설문조사 설계 전문가야.
+패스트파이브 입주사를 대상으로 "라운지 이용 만족도 조사"를 하려고 해.
+응답에 5~10분 정도 걸리는 분량으로, 다음을 포함한 설문 문항을 만들어줘.
+① 이용 빈도 (선택형) ② 만족도 (5점 척도) ③ 개선 희망 사항 (주관식)
+문항은 총 8개 이내로, 문항별로 응답 유형도 표시해줘.</div>
+
+    <h3>② 구글 폼즈에 문항 자동 입력하기</h3>
+    <p class="body-text">문항 초안이 완성되면, Gemini가 만든 목록을 <strong>구글 설문지(Forms)에 빠르게 옮기는 작업</strong>이 필요해요. Gemini에게 "구글 폼즈에 입력하기 좋은 형식으로 정리해줘"라고 요청하면, 문항·선택지·응답유형이 깔끔하게 정렬된 리스트로 받을 수 있어 옮겨 적는 시간이 줄어들어요.</p>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 작업 순서 팁</div>
+      <ul class="point-list">
+        <li>1단계: Gemini로 문항 초안 생성</li>
+        <li>2단계: "구글 폼즈 입력용으로 문항 — 선택지 — 응답유형 순서로 정리해줘" 요청</li>
+        <li>3단계: 정리된 목록을 보면서 구글 폼즈에 하나씩 입력 (또는 NotebookLM·Forms 연동 활용)</li>
+      </ul>
+    </div>
+
+    <h3>③ Gemini로 설문 결과 분석하기</h3>
+    <p class="body-text">응답이 모이면 구글 시트에 자동으로 데이터가 쌓여요. 이 데이터를 Gemini in Sheets 또는 Gemini 채팅에 붙여넣고 분석을 요청할 수 있어요.</p>
+
+    <div class="prompt-block">아래는 라운지 이용 만족도 설문 응답 데이터야.
+이 데이터를 분석해서 다음을 정리해줘.
+① 전체 만족도 평균과 분포
+② 이용 빈도와 만족도의 관계 (패턴이 있는지)
+③ 주관식 응답에서 반복적으로 나온 키워드 top 3
+④ 개선이 필요한 영역 1가지 제안
+
+[설문 응답 데이터 붙여넣기]</div>
+
+    <h3>④ 설문 결과 보고서 / PPT 작성하기</h3>
+    <p class="body-text">분석이 끝나면 그 결과를 바탕으로 <strong>보고서 또는 발표용 슬라이드 형태</strong>로 정리해달라고 요청하면 돼요. 보고서는 Google Docs, 슬라이드는 Google Slides와 연동해서 바로 초안을 만들 수 있어요.</p>
+
+    <div class="prompt-block">위 분석 결과를 바탕으로 "라운지 이용 만족도 조사 결과 보고서" 초안을 작성해줘.
+구성은 ① 조사 개요 ② 주요 결과 ③ 시사점 ④ 개선 제안 순서로,
+각 섹션은 3~4줄로 간결하게 작성해줘.
+보고 대상은 운영팀 파트장이야.</div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 4강 핵심 정리</div>
+      <ul class="point-list">
+        <li><strong>문항 설계 → 입력 → 분석 → 보고서</strong>, 전 과정에서 Gemini를 단계별로 활용</li>
+        <li>처음부터 완벽한 결과를 바라지 말고, <strong>단계마다 검토하고 다음 단계로 넘어가는 것</strong>이 핵심</li>
+        <li>설문 응답 데이터는 개인정보가 포함될 수 있으니, 분석 전 익명화 여부를 꼭 확인하세요</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 4강 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="l4">
+    <div class="section-num">section 04</div>
+    <h2 class="section-title">보고서 작성</h2>
+    <p class="section-sub">시장조사 · 리스크 분석 · 요약 보고서 · 녹음파일 회의록</p>
+
+    <p class="body-text">보고서는 <strong>"어떤 정보를 어떤 구조로 담을 것인가"</strong>가 가장 어렵고 시간이 많이 드는 부분이에요. 4가지 보고서 유형별로 어떻게 Gemini를 활용하는지 봐요.</p>
+
+    <div class="feature-elements">
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Report 01</div>
+          <div class="feature-el-name">시장 조사<br>보고서</div>
+          <div class="feature-el-name-en">Market Research</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">2강에서 배운 <strong>딥 리서치 기능과 연결</strong>되는 영역이에요. 시장 동향, 경쟁사 현황 등을 조사해서 보고서 형태로 정리해달라고 요청하세요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>예시:</span> "2026년 국내 공유오피스 시장의 주요 트렌드 3가지를 조사해서, 우리 회사 관점에서의 시사점과 함께 보고서로 정리해줘"
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Report 02</div>
+          <div class="feature-el-name">리스크 분석<br>보고서</div>
+          <div class="feature-el-name-en">Risk Analysis</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">특정 사안에 대해 <strong>"발생 가능한 리스크 + 대응 방안"</strong> 구조로 정리해달라고 요청하면, 미리 점검해야 할 항목들을 빠르게 체크할 수 있어요. 단, 법률·재무 관련 리스크는 반드시 전문가 확인이 필요해요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>예시:</span> "신규 지점 오픈 시 발생할 수 있는 운영 리스크를 5가지 항목으로 정리하고, 각 항목별 대응 방안을 함께 제시해줘"
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Report 03</div>
+          <div class="feature-el-name">요약<br>보고서</div>
+          <div class="feature-el-name-en">Summary Report</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">긴 문서, 여러 자료를 <strong>핵심만 추려서 한 장으로</strong> 만드는 작업이에요. "이 문서들을 종합해서 한 장 보고서로 만들어줘"처럼 요청하면, 여러 자료의 공통점과 핵심을 정리해줘요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>예시:</span> "아래 3개 자료를 종합해서, 핵심 내용과 공통적으로 언급된 이슈를 A4 반 장 분량으로 요약해줘"
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Report 04</div>
+          <div class="feature-el-name">녹음파일<br>회의록</div>
+          <div class="feature-el-name-en">Audio to Minutes</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">회의 녹음 파일을 업로드하면 Gemini가 <strong>텍스트로 변환 + 회의록 형식으로 정리</strong>까지 한 번에 해줄 수 있어요. 받아쓰기 시간을 크게 줄일 수 있는 기능이에요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>예시:</span> "이 녹음 파일을 듣고 ① 주요 결정사항 ② 액션 아이템(담당자 포함) ③ 다음 회의 안건으로 정리해줘"
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3>보고서 작성 공통 팁</h3>
+    <div class="point-box">
+      <div class="point-box-title">💡 어떤 보고서든 적용되는 원칙</div>
+      <ul class="point-list">
+        <li><strong>독자를 명시하세요</strong> — "임원 보고용"과 "팀 내부 공유용"은 톤과 깊이가 달라야 해요</li>
+        <li><strong>구조를 먼저 지정하세요</strong> — "배경-현황-제안" 처럼 섹션 구조를 미리 주면 훨씬 정돈된 결과가 나와요</li>
+        <li><strong>분량을 명시하세요</strong> — "A4 1장", "3줄 이내" 등 구체적으로 지정하세요</li>
+        <li><strong>수치·통계는 반드시 검증하세요</strong> — 1주차에서 배운 할루시네이션, 보고서에서 특히 위험해요</li>
+      </ul>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 5강 핵심 정리</div>
+      <ul class="point-list">
+        <li><strong>시장 조사</strong> = 딥 리서치 기능과 연결해서 외부 동향 파악</li>
+        <li><strong>리스크 분석</strong> = "리스크 + 대응방안" 구조로 사전 점검</li>
+        <li><strong>요약 보고서</strong> = 여러 자료를 한 장으로 압축</li>
+        <li><strong>녹음파일 회의록</strong> = 음성을 텍스트 + 구조화된 회의록으로 자동 변환</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 5강 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="l5">
+    <div class="section-num">section 05</div>
+    <h2 class="section-title">질문·문제 해결하기</h2>
+    <p class="section-sub">대답 수준 설정 · PDF·이미지로 질문하기 · 문제해결을 위한 조언 받기</p>
+
+    <p class="body-text">9강은 <strong>"AI를 어떻게 활용하면 더 잘 도움받을 수 있는가"</strong>에 대한 강의예요. 지금까지 배운 모든 기능을 더 잘 쓰기 위한 마지막 퍼즐이라고 생각하면 돼요.</p>
+
+    <h3>① 대답 수준 설정해서 질문하기</h3>
+    <p class="body-text">같은 질문이라도 <strong>"누구에게 설명하는 수준인지"</strong>를 지정하면 답변의 난이도와 깊이가 완전히 달라져요. 1주차에서 배운 Format(출력형식) 요소를 활용하는 거예요.</p>
+
+    <div class="compare-pair">
+      <div class="compare-bad">
+        <div class="compare-tag">❌ 모호한 질문</div>
+        <div class="compare-prompt">생성형 AI가 뭔지 설명해줘</div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-tag">✅ 수준을 지정한 질문</div>
+        <div class="compare-prompt">생성형 AI가 뭔지 설명해줘.<br><br>대상은 IT를 전혀 모르는 50대 임원이고,<br>전문 용어 없이 일상적인 비유로,<br>3문장 이내로 설명해줘.</div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 대답 수준을 지정하는 표현들</div>
+      <ul class="point-list">
+        <li>"초등학생도 이해할 수 있게" / "전문가 수준으로 자세하게"</li>
+        <li>"이 분야를 처음 접하는 사람 기준으로" / "이미 알고 있는 사람한테 핵심만"</li>
+        <li>"한 문장으로" / "A4 1장 분량으로 자세하게"</li>
+      </ul>
+    </div>
+
+    <h3>② PDF·이미지로 질문하기</h3>
+    <p class="body-text">텍스트로 옮겨 쓰기 번거로운 자료는 <strong>파일이나 사진을 그대로 업로드</strong>해서 질문할 수 있어요. PDF 보고서, 손글씨 메모, 표·그래프 이미지, 명함 등 다양하게 활용 가능해요.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">📷 비유 — 사진 찍어서 바로 물어보기</div>
+      <p>예전엔 표에 있는 숫자를 직접 타이핑해서 옮겨야 했다면, 지금은 그 표를 사진으로 찍어서 "이 표에서 가장 큰 값이 뭐야?"라고 바로 물어볼 수 있어요. 자료를 텍스트로 변환하는 시간이 사라지는 거예요.</p>
+    </div>
+
+    <div class="prompt-block">[PDF 또는 이미지 업로드]
+
+이 문서(이미지)의 핵심 내용을 bullet point 5개로 정리해줘.
+표가 포함되어 있다면 표의 핵심 수치도 함께 짚어줘.</div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 PDF·이미지 활용 시 주의사항</div>
+      <ul class="point-list">
+        <li>이미지 품질이 낮으면(흐릿함, 손글씨) 인식 오류가 발생할 수 있어요 — 결과를 한 번 더 확인하세요</li>
+        <li>민감한 개인정보·계약서 등은 회사 보안 정책을 먼저 확인하고 업로드하세요</li>
+      </ul>
+    </div>
+
+    <h3>③ 문제해결을 위한 조언 받기</h3>
+    <p class="body-text">업무 중 막막한 상황이 생겼을 때, Gemini에게 <strong>"상황을 설명하고 조언을 구하는"</strong> 방식으로도 활용할 수 있어요. 정답을 바로 주는 게 아니라, 여러 선택지와 고려사항을 정리해주는 "생각 정리 파트너"로 쓰는 거예요.</p>
+
+    <div class="prompt-block">너는 경험이 풍부한 비즈니스 컨설턴트야.
+
+상황: 우리 지점에 입주한 한 회사가 계약 만료 1개월 전인데
+아직 연장 여부를 알려주지 않고 있어. 다른 입주사 대기 문의도 있는 상황이야.
+
+이 상황에서 고려해야 할 사항과, 취할 수 있는 행동 옵션을 3가지 정도
+장단점과 함께 정리해줘. 최종 결정은 내가 할 거니까 결정은 내려주지 않아도 돼.</div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 9강 핵심 정리</div>
+      <ul class="point-list">
+        <li><strong>대답 수준 설정</strong> = 듣는 사람의 수준을 명시하면 답변의 깊이가 맞춰져요</li>
+        <li><strong>PDF·이미지 질문</strong> = 자료를 텍스트로 옮기는 시간을 없애줘요</li>
+        <li><strong>문제해결 조언</strong> = AI는 "정답"이 아니라 "선택지 정리"를 도와주는 파트너예요</li>
+        <li>5강은 1~4강의 모든 기능을 <strong>더 정확하고 효율적으로 쓰기 위한 사용법</strong>이에요</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- 6강 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="l6">
+    <div class="section-num">section 06</div>
+    <h2 class="section-title">GWS 도구별 활용</h2>
+    <p class="section-sub">Docs · Sheets · Slides ／ Gmail · Meet · Drive — 각 도구별 핵심 기능 + 실습</p>
+
+    <p class="body-text">지금까지 배운 Gemini 기능들을 <strong>실제로 매일 쓰는 GWS 도구 안에서</strong> 어떻게 호출하는지 도구별로 정리했어요. 모든 도구에서 공통적으로 화면 오른쪽 또는 상단의 <strong>별 모양(✦) Gemini 아이콘</strong>을 누르면 시작할 수 있어요.</p>
+
+    <h3>문서·기획 도구 — Docs · Sheets · Slides</h3>
+
+    <div class="feature-elements">
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Tool 01</div>
+          <div class="feature-el-name">Google<br>Docs</div>
+          <div class="feature-el-name-en">문서 작성</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc"><strong>핵심 기능:</strong> 빈 문서에서 바로 초안 생성, 작성된 글의 톤·분량 조정, 긴 문서 요약, 맞춤법·표현 다듬기</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>실습:</span> 새 문서를 열고 ✦ 아이콘 클릭 → "신규 입주사 환영 안내문 초안을 작성해줘"라고 입력해보세요. 생성된 초안에서 "더 간결하게 다시 써줘"로 다듬어보세요.
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Tool 02</div>
+          <div class="feature-el-name">Google<br>Sheets</div>
+          <div class="feature-el-name-en">데이터 정리</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc"><strong>핵심 기능:</strong> 수식 자동 생성·설명, 비정형 텍스트를 표 형태로 구조화, 데이터 패턴 분석 및 인사이트 도출</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>실습:</span> 시트에 입주사 목록과 계약 만료일을 입력한 뒤 ✦ 아이콘으로 "계약 만료가 30일 이내인 입주사만 표시하는 수식을 만들어줘"라고 요청해보세요.
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Tool 03</div>
+          <div class="feature-el-name">Google<br>Slides</div>
+          <div class="feature-el-name-en">발표 자료</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc"><strong>핵심 기능:</strong> 주제를 입력하면 슬라이드 초안과 이미지를 자동 생성, 기존 슬라이드의 디자인·문구 수정, 발표 스크립트 생성</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>실습:</span> 새 프레젠테이션에서 ✦ 아이콘 클릭 → "이번 분기 입주율 현황 보고 슬라이드 3장을 만들어줘"라고 요청해보세요. 생성된 슬라이드의 문구를 다시 다듬어보세요.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3>소통·협업 도구 — Gmail · Meet · Drive</h3>
+
+    <div class="feature-elements">
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Tool 04</div>
+          <div class="feature-el-name">Gmail</div>
+          <div class="feature-el-name-en">메일</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc"><strong>핵심 기능:</strong> 메일 초안 자동 작성, 긴 스레드 한 번에 요약, 받은 메일에 대한 답장 제안, 톤·격식 조정</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>실습:</span> 받은 메일함에서 긴 스레드를 열고 ✦ 아이콘으로 "이 스레드를 요약해줘"를 실행해보세요. 답장 작성 시에도 ✦ 아이콘으로 초안을 받아보세요.
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Tool 05</div>
+          <div class="feature-el-name">Google<br>Meet</div>
+          <div class="feature-el-name-en">회의</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc"><strong>핵심 기능:</strong> 회의 내용 실시간 메모 및 요약 생성, 회의 중 번역·자막 지원, 회의 후 액션 아이템 정리</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>실습:</span> 회의 시작 전 "메모 작성 시작"을 켜두면 회의 종료 후 자동으로 요약본이 생성돼요. 생성된 요약본을 5강에서 배운 회의록 형식으로 다시 정리해보세요.
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Tool 06</div>
+          <div class="feature-el-name">Google<br>Drive</div>
+          <div class="feature-el-name-en">파일 관리</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc"><strong>핵심 기능:</strong> 드라이브 내 여러 파일을 검색·요약, 파일 간 내용 비교, 특정 파일에 대해 바로 질문하기</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>실습:</span> Drive 검색창 옆 ✦ 아이콘으로 "이번 달에 수정된 보고서 파일들을 찾아서 핵심 변경사항을 요약해줘"처럼 요청해보세요.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 6강 핵심 정리</div>
+      <ul class="point-list">
+        <li>모든 GWS 도구에서 <strong>✦ Gemini 아이콘</strong>을 누르면 동일한 방식으로 호출돼요</li>
+        <li><strong>Docs·Sheets·Slides</strong> = 문서·데이터·발표자료를 "만들고 다듬는" 도구</li>
+        <li><strong>Gmail·Meet·Drive</strong> = 소통과 자료 관리를 "정리하고 요약하는" 도구</li>
+        <li>1~5강에서 배운 프롬프트 작성법(Persona·Task·Context·Format)은 어떤 도구에서든 동일하게 적용돼요</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 이번 주 미션 -->
+  <section class="section" style="margin-bottom:2rem;">
+    <div class="section-num">이번 주 미션</div>
+    <h2 class="section-title">오늘부터 이것만 하세요</h2>
+    <ul class="checklist">
+      <li><div class="check-box"></div>제공된 유튜브 강의 시청하고 AI와 대화하며 심화 학습하기</li>
+      <li><div class="check-box"></div>내 업무에 맞는 Gem 1개 직접 만들어보기 (예: 이메일 작성 Gem, 회의록 요약 Gem)</li>
+      <li><div class="check-box"></div>만든 Gem 또는 GWS 도구(Docs·Sheets·Gmail 등) 중 1가지로 실제 업무 상황을 처리해보고 결과물 슬랙 #패파아카데미_ai기초 채널에 공유하기</li>
+    </ul>
+  </section>
+
+  <!-- 푸터 -->
+  <div class="doc-footer">
+    <div class="doc-footer-logo">FF <em>Academy</em> · 2026</div>
+    <div class="doc-footer-note">AI 활용 교육 (Gemini 기초) 3주차 학습자료</div>
+  </div>
+
+</div>
+
+<script>
+  const sections = ['l1','l2','l3','l4','l5','l6'];
+
+  // 클릭 시 부드럽게 스크롤 (sticky bar 높이 보정)
+  document.querySelectorAll('.toc-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.getAttribute('href').replace('#','');
+      const el = document.getElementById(id);
+      if (!el) return;
+      const barH = document.getElementById('toc-bar').offsetHeight;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - barH - 16;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // 강의 카드 클릭도 부드럽게 스크롤
+  document.querySelectorAll('.section-toc-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.getAttribute('href').replace('#','');
+      const el = document.getElementById(id);
+      if (!el) return;
+      const barH = document.getElementById('toc-bar').offsetHeight;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - barH - 16;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  // 스크롤 감지 → 현재 섹션 버튼 활성화
+  function onScroll() {
+    const barH = document.getElementById('toc-bar').offsetHeight + 24;
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.getBoundingClientRect().top <= barH) current = id;
+    });
+
+    sections.forEach(id => {
+      const btn = document.getElementById('btn-' + id);
+      if (!btn) return;
+      btn.classList.toggle('active', id === current);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+</body>
+</html>
