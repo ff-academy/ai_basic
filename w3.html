@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4주차 학습자료 | NotebookLM 완전 정복</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f9f7f2;
+    --surface: #ffffff;
+    --border: #e8e4da;
+    --border2: #d4cfc3;
+    --text-primary: #1c1a16;
+    --text-secondary: #4a4740;
+    --text-muted: #8a8780;
+    --accent: #c9a227;
+    --accent-dim: rgba(201,162,39,0.10);
+    --accent-dim2: rgba(201,162,39,0.05);
+    --navy: #1e2d4a;
+    --navy-dim: rgba(30,45,74,0.07);
+    --serif: 'Noto Serif KR', serif;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 4rem 2rem 6rem;
+  }
+
+  .doc-header {
+    border-bottom: 2px solid var(--text-primary);
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .doc-label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+
+  .doc-title {
+    font-family: var(--serif);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+
+  .doc-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  .toc-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(249,247,242,0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.55rem 2rem;
+    margin: 0 -2rem 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .toc-bar::-webkit-scrollbar { display: none; }
+
+  .toc-bar-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+    margin-right: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  .toc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border2);
+    background: transparent;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.18s;
+    text-decoration: none;
+  }
+
+  .toc-btn:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+    background: var(--navy-dim);
+  }
+
+  .toc-btn.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: #fff;
+  }
+
+  .section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .section-num {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: -0.2rem 0 1.25rem;
+  }
+
+  .body-text {
+    font-size: 0.93rem;
+    color: var(--text-secondary);
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+  }
+
+  .body-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .analogy {
+    background: var(--accent-dim2);
+    border: 1px solid rgba(201,162,39,0.2);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .analogy-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .analogy p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .warning {
+    background: #fff8f0;
+    border: 1px solid rgba(200,80,30,0.2);
+    border-left: 3px solid #c8501e;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .warning-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #c8501e;
+    margin-bottom: 0.4rem;
+  }
+
+  .warning p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .point-box {
+    background: var(--navy-dim);
+    border: 1px solid rgba(30,45,74,0.12);
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    border-radius: 6px;
+  }
+
+  .point-box-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .point-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .point-list li {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    padding-left: 1.1rem;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .point-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0.3rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.83rem;
+  }
+
+  .compare-table th {
+    background: var(--navy);
+    color: #fff;
+    padding: 0.7rem 0.85rem;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-align: left;
+    border: 1px solid var(--navy);
+  }
+
+  .compare-table th:first-child { width: 120px; }
+
+  .compare-table td {
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+    line-height: 1.65;
+  }
+
+  .compare-table tr:nth-child(even) td { background: var(--navy-dim); }
+
+  .compare-table .label-col {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+  }
+
+  .compare-table .go { color: #1e6e38; font-weight: 600; }
+  .compare-table .no { color: var(--text-muted); }
+
+  .feature-elements {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1.25rem 0;
+  }
+
+  .feature-el {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .feature-el:last-child { border-bottom: none; }
+
+  .feature-el-left {
+    background: var(--navy);
+    padding: 1.1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .feature-el-num {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.2rem;
+    text-transform: uppercase;
+  }
+
+  .feature-el-name {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .feature-el-name-en {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.1rem;
+    font-family: var(--sans);
+    font-weight: 400;
+  }
+
+  .feature-el-right {
+    padding: 1rem 1.25rem;
+    background: var(--surface);
+  }
+
+  .feature-el-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-el-example {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .feature-el-example span {
+    color: var(--accent);
+    font-style: normal;
+    font-weight: 600;
+  }
+
+  .compare-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .compare-bad {
+    background: #fff5f5;
+    border: 1px solid rgba(200,50,50,0.18);
+    border-top: 3px solid #dc3535;
+    padding: 0.9rem 1rem;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .compare-good {
+    background: #f3faf5;
+    border: 1px solid rgba(30,140,70,0.18);
+    border-top: 3px solid #1e8c46;
+    padding: 0.9rem 1rem;
+    border-radius: 0 0 6px 6px;
+  }
+
+  .compare-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .compare-bad .compare-tag { color: #dc3535; }
+  .compare-good .compare-tag { color: #1e8c46; }
+
+  .compare-prompt {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.75;
+  }
+
+  .prompt-block {
+    background: #f4f2ec;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+
+  .section-toc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  .section-toc-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    text-decoration: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .section-toc-item:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim2);
+  }
+
+  .section-toc-num {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 40px;
+  }
+
+  .section-toc-text {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .section-toc-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  h3 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 1.75rem 0 0.6rem;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  .check-box {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border2);
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .warn-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .warn-list li {
+    display: flex;
+    gap: 0.85rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(200,80,30,0.12);
+    font-size: 0.87rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    align-items: flex-start;
+  }
+
+  .warn-list li:last-child { border-bottom: none; }
+
+  .warn-list .w-icon {
+    flex-shrink: 0;
+    font-size: 1rem;
+    padding-top: 2px;
+  }
+
+  .warn-list strong {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.15rem;
+  }
+
+  .doc-footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .doc-footer-logo {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .doc-footer-logo em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .doc-footer-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 600px) {
+    .compare-pair { grid-template-columns: 1fr; }
+    .feature-el { grid-template-columns: 1fr; }
+    .feature-el-left { padding: 0.75rem 1rem; flex-direction: row; align-items: center; gap: 0.75rem; }
+    .compare-table { font-size: 0.75rem; }
+    .compare-table th, .compare-table td { padding: 0.5rem 0.6rem; }
+    .section-toc-sub { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 헤더 -->
+  <div class="doc-header">
+    <div class="doc-label">FF Academy · AI 활용 교육 · 4주차 학습자료</div>
+    <h1 class="doc-title">NotebookLM 완전 정복</h1>
+    <p class="doc-sub">내가 고른 자료 안에서만 답하는 AI — 할루시네이션을 줄이고 업무 인사이트를 극대화하는 방법</p>
+  </div>
+
+  <!-- 상단 네비 바 -->
+  <nav class="toc-bar" id="toc-bar">
+    <span class="toc-bar-label">section</span>
+    <a class="toc-btn" id="btn-s01" href="#s01" title="01 — NotebookLM이란?">01</a>
+    <a class="toc-btn" id="btn-s02" href="#s02" title="02 — 핵심 장점">02</a>
+    <a class="toc-btn" id="btn-s03" href="#s03" title="03 — 화면 구성">03</a>
+    <a class="toc-btn" id="btn-s04" href="#s04" title="04 — 핵심 기능">04</a>
+    <a class="toc-btn" id="btn-s05" href="#s05" title="05 — 업무 활용법">05</a>
+    <a class="toc-btn" id="btn-s06" href="#s06" title="06 — 주의사항">06</a>
+    <a class="toc-btn" id="btn-s07" href="#s07" title="07 — Gemini vs NotebookLM">07</a>
+  </nav>
+
+  <!-- 강의 목차 카드 -->
+  <div class="section-toc">
+    <a class="section-toc-item" href="#s01">
+      <span class="section-toc-num">01</span>
+      <span class="section-toc-text">NotebookLM이란?</span>
+      <span class="section-toc-sub">일반 AI와의 차이 · RAG 방식 · 비유</span>
+    </a>
+    <a class="section-toc-item" href="#s02">
+      <span class="section-toc-num">02</span>
+      <span class="section-toc-text">핵심 장점 3가지</span>
+      <span class="section-toc-sub">할루시네이션 감소 · 다중 문서 비교 · Gemini와 역할 구분</span>
+    </a>
+    <a class="section-toc-item" href="#s03">
+      <span class="section-toc-num">03</span>
+      <span class="section-toc-text">화면 구성 &amp; 시작하기</span>
+      <span class="section-toc-sub">3패널 구조 · 노트북 만들기 · 업로드 소스 종류</span>
+    </a>
+    <a class="section-toc-item" href="#s04">
+      <span class="section-toc-num">04</span>
+      <span class="section-toc-text">핵심 기능 익히기</span>
+      <span class="section-toc-sub">자동 요약 · 오디오 오버뷰 · 스튜디오 · 비교 분석</span>
+    </a>
+    <a class="section-toc-item" href="#s05">
+      <span class="section-toc-num">05</span>
+      <span class="section-toc-text">업무 활용법</span>
+      <span class="section-toc-sub">산업 리포트 · 회의록 분석 · 경쟁사 비교 · Q&amp;A 봇</span>
+    </a>
+    <a class="section-toc-item" href="#s06">
+      <span class="section-toc-num">06</span>
+      <span class="section-toc-text">⚠️ 주의사항 &amp; 한계</span>
+      <span class="section-toc-sub">파일 제한 · 보안 · 한국어 한계 · 모바일</span>
+    </a>
+    <a class="section-toc-item" href="#s07">
+      <span class="section-toc-num">07</span>
+      <span class="section-toc-text">Gemini vs NotebookLM</span>
+      <span class="section-toc-sub">비교표 · 판단 기준 · 함께 쓰는 법</span>
+    </a>
+  </div>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SECTION 01 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="s01">
+    <div class="section-num">section 01</div>
+    <h2 class="section-title">NotebookLM이란?</h2>
+    <p class="section-sub">일반 AI 챗봇과의 결정적 차이 · Gemini 기반 RAG 방식 · 비유</p>
+
+    <p class="body-text">NotebookLM은 Google이 만든 AI 도구지만, Gemini 같은 일반 AI 챗봇과는 근본적으로 다릅니다. 일반 AI가 인터넷 전체를 학습한 데이터로 답한다면, NotebookLM은 <strong>내가 직접 업로드한 자료 안에서만 답합니다.</strong></p>
+
+    <div class="analogy">
+      <div class="analogy-label">📚 비유 — 내가 직접 고른 책만 읽은 전문 비서</div>
+      <p>도서관 전체를 읽은 AI와, 내가 골라서 건네준 책만 읽은 AI의 차이예요. 도서관 전체를 읽은 AI는 뭐든 알지만 가끔 잘못된 내용을 자신 있게 말해요. 반면 내가 건네준 책만 읽은 AI는 범위가 좁지만 그 안에서는 정확하게 답하고, 어느 페이지에 그 내용이 있는지까지 짚어줍니다.</p>
+    </div>
+
+    <div class="compare-pair">
+      <div class="compare-bad">
+        <div class="compare-tag">일반 AI 챗봇 (Gemini 등)</div>
+        <div class="compare-prompt">인터넷 전체 학습 데이터 기반으로 답변 → 그럴 듯하지만 사실과 다른 내용을 만들어낼 수 있음 (할루시네이션 위험)</div>
+      </div>
+      <div class="compare-good">
+        <div class="compare-tag">NotebookLM</div>
+        <div class="compare-prompt">내가 업로드한 자료만 참조 → 답변에 출처가 자동 표시되어 원문 확인 즉시 가능</div>
+      </div>
+    </div>
+
+    <h3>RAG(검색 증강 생성)가 뭔가요?</h3>
+    <p class="body-text">NotebookLM은 <strong>RAG(Retrieval-Augmented Generation)</strong> 방식으로 동작합니다. 질문이 들어오면 AI가 먼저 내가 올린 문서를 검색(Retrieve)하고, 거기서 찾은 내용을 바탕으로 답변을 생성(Generate)합니다. 출처가 명확하고 할루시네이션이 적은 이유가 바로 여기 있어요.</p>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 Section 01 핵심 정리</div>
+      <ul class="point-list">
+        <li>NotebookLM = 내가 업로드한 자료 안에서만 답하는 AI</li>
+        <li>일반 AI와의 차이는 범위의 제한이 아닌 <strong>정확도와 신뢰도의 차이</strong></li>
+        <li>RAG 방식 덕분에 답변 옆에 출처가 자동으로 붙어 원문 검증이 쉬움</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SECTION 02 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="s02">
+    <div class="section-num">section 02</div>
+    <h2 class="section-title">핵심 장점 3가지</h2>
+    <p class="section-sub">할루시네이션이 적은 이유 · 여러 문서 동시 비교 · Gemini와 용도 구분</p>
+
+    <div class="feature-elements">
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Point 01</div>
+          <div class="feature-el-name">할루시네이션이<br>적다</div>
+          <div class="feature-el-name-en">Source-grounded</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">답변의 모든 문장에 <strong>인용 출처가 자동으로 표기</strong>됩니다. 출처 번호를 클릭하면 원본 문서의 해당 위치로 바로 이동해 사실 여부를 즉시 확인할 수 있어요. 보고서나 의사결정 근거로 활용할 때 특히 유용합니다.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>핵심:</span> AI가 "그럴 듯하게 지어낸 것"인지, 실제 문서에 있는 내용인지 클릭 한 번으로 검증 가능
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Point 02</div>
+          <div class="feature-el-name">여러 문서<br>동시 비교</div>
+          <div class="feature-el-name-en">Cross-doc Analysis</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">리포트 5개, 회의록 10개를 한 번에 올리고 <strong>문서들 간 공통점, 차이점, 상충되는 내용</strong>을 찾아달라고 할 수 있어요. 사람이 하면 몇 시간 걸릴 교차 분석을 몇 분 안에 초안으로 받을 수 있습니다.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>예시 질문:</span> "이 5개 리포트에서 공통으로 언급되는 리스크 요인만 추려줘"
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Point 03</div>
+          <div class="feature-el-name">Gemini와<br>역할 구분</div>
+          <div class="feature-el-name-en">Right Tool</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">두 도구는 경쟁 관계가 아니에요. <strong>창의적 글쓰기, 최신 정보 검색, 일반 Q&A는 Gemini</strong>로, <strong>내 자료 기반 분석·요약·비교는 NotebookLM</strong>으로 분업하면 각 도구의 강점을 최대한 살릴 수 있습니다.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>원칙:</span> 인터넷이 필요하면 Gemini, 내 문서가 기준이면 NotebookLM
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SECTION 03 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="s03">
+    <div class="section-num">section 03</div>
+    <h2 class="section-title">화면 구성 &amp; 시작하기</h2>
+    <p class="section-sub">소스 패널 / 채팅 패널 / 스튜디오 패널 3단 구조 · 노트북 만들기 · 업로드 소스 종류</p>
+
+    <p class="body-text">NotebookLM의 화면은 크게 3개의 패널로 나뉩니다. 각 패널의 역할을 알면 처음 써도 헷갈리지 않아요.</p>
+
+    <div class="feature-elements">
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Panel 01</div>
+          <div class="feature-el-name">소스 패널</div>
+          <div class="feature-el-name-en">Source Panel</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">문서, URL, 유튜브 링크 등 <strong>자료를 업로드하는 공간</strong>입니다. 여기에 넣은 자료만 AI가 참조합니다. 노트북당 최대 50개까지 추가 가능해요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>팁:</span> 소스를 추가하면 자동 요약 카드가 생성돼 전체 내용을 빠르게 파악할 수 있어요.
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Panel 02</div>
+          <div class="feature-el-name">채팅 패널</div>
+          <div class="feature-el-name-en">Chat Panel</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">질문하고 답변받는 공간입니다. <strong>답변에는 클릭 가능한 출처 번호</strong>가 함께 표시되어 어느 문서의 어느 부분인지 바로 확인할 수 있어요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>팁:</span> 채팅 내용 중 유용한 부분은 "노트에 저장" 버튼으로 따로 모아둘 수 있어요.
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Panel 03</div>
+          <div class="feature-el-name">스튜디오<br>패널</div>
+          <div class="feature-el-name-en">Studio Panel</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">오디오 오버뷰, 마인드맵, 슬라이드 초안 등 <strong>자동 생성 콘텐츠를 만드는 공간</strong>입니다. 채팅 없이 버튼 하나로 다양한 결과물을 뽑아낼 수 있어요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>팁:</span> 오디오 오버뷰가 이 패널의 핵심 기능 — 문서를 팟캐스트처럼 들을 수 있어요.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <h3>업로드 가능한 소스 종류</h3>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>소스 유형</th>
+          <th>예시 / 지원 형식</th>
+          <th>주의사항</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-col">문서 파일</td>
+          <td>PDF, Google Docs, Google Slides, 텍스트 파일(.txt)</td>
+          <td>파일당 최대 200MB / 50만 단어</td>
+        </tr>
+        <tr>
+          <td class="label-col">웹 링크</td>
+          <td>웹페이지 URL</td>
+          <td>로그인 필요 페이지는 불가</td>
+        </tr>
+        <tr>
+          <td class="label-col">유튜브 링크</td>
+          <td>유튜브 영상 URL</td>
+          <td>자막(CC) 기반 인식 — 자막 없는 영상은 제한적</td>
+        </tr>
+        <tr>
+          <td class="label-col">Google Drive</td>
+          <td>Drive 파일 직접 연동</td>
+          <td>Google 계정 권한 필요</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="analogy">
+      <div class="analogy-label">💡 노트북 이름 짓는 팁</div>
+      <p>주제별로 노트북을 분리하세요. 예: <strong>[2024 경쟁사 분석]</strong> / <strong>[Q3 회의록]</strong> / <strong>[산업 트렌드 리포트]</strong>. 노트북끼리 서로 참조가 불가하므로 처음부터 주제를 명확히 나누는 것이 중요합니다.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SECTION 04 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="s04">
+    <div class="section-num">section 04</div>
+    <h2 class="section-title">핵심 기능 익히기</h2>
+    <p class="section-sub">자동 요약 &amp; Q&A · 오디오 오버뷰 · 스튜디오 기능 · 여러 문서 비교 분석</p>
+
+    <p class="body-text">NotebookLM에는 채팅 외에도 클릭 한 번으로 다양한 결과물을 뽑아낼 수 있는 기능들이 있어요. 차례대로 살펴봅니다.</p>
+
+    <h3>① 자동 요약 &amp; Q&A — 문서 읽지 않고 핵심 파악</h3>
+    <p class="body-text">소스를 업로드하면 NotebookLM이 <strong>자동으로 요약 카드를 생성</strong>합니다. 문서를 처음부터 읽지 않아도 핵심을 빠르게 파악할 수 있어요. 채팅 패널에서 자연어로 질문하면 해당 문서 기반의 정확한 답변이 나옵니다.</p>
+
+    <div class="prompt-block">문서 업로드 후 바로 쓸 수 있는 질문 예시:
+
+"이 문서의 핵심 주장 3가지는 무엇인가요?"
+"이 보고서에서 수치로 언급된 내용만 모아줘"
+"이 문서가 제안하는 해결책은 무엇인가요?"</div>
+
+    <h3>② 오디오 오버뷰 — 문서를 팟캐스트처럼 듣기</h3>
+    <p class="body-text">스튜디오 패널의 가장 독특한 기능이에요. 업로드한 문서 내용을 <strong>AI 호스트 2명이 대화하는 팟캐스트 형식으로 자동 변환</strong>해줍니다. 이동 중이나 운전 중에 귀로 문서를 소화할 수 있어요.</p>
+
+    <div class="analogy">
+      <div class="analogy-label">🎧 비유 — 20페이지 보고서를 팟캐스트로</div>
+      <p>20페이지 산업 분석 리포트를 올리고 오디오 오버뷰를 생성하면, AI 두 명이 "이 리포트에서 흥미로운 건 말이야..." 형식으로 자연스럽게 대화하며 핵심을 설명해줘요. 출퇴근 시간에 들으면서 문서를 소화할 수 있습니다.</p>
+    </div>
+
+    <h3>③ 스튜디오 기능 — 마인드맵 / 슬라이드 / 인포그래픽 / 브리핑 자동 생성</h3>
+
+    <div class="feature-elements">
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Tool 01</div>
+          <div class="feature-el-name">마인드맵</div>
+          <div class="feature-el-name-en">Mind Map</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">문서의 구조와 핵심 개념 간 관계를 <strong>시각적인 마인드맵</strong>으로 자동 생성합니다. 복잡한 문서의 전체 구조를 한눈에 파악할 때 유용해요.</p>
+        </div>
+      </div>
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Tool 02</div>
+          <div class="feature-el-name">슬라이드</div>
+          <div class="feature-el-name-en">Slides</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">문서 내용을 바탕으로 <strong>프레젠테이션 슬라이드 초안</strong>을 자동 생성합니다. 보고 자료 준비 시간을 크게 줄여줘요.</p>
+        </div>
+      </div>
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">Tool 03</div>
+          <div class="feature-el-name">브리핑 문서</div>
+          <div class="feature-el-name-en">Briefing Doc</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">여러 문서를 하나의 <strong>요약 브리핑으로 통합</strong>합니다. 임원 보고용 원페이저 초안으로 바로 활용할 수 있어요.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>④ 여러 문서 비교 분석 — "두 자료의 공통점과 차이점을 찾아줘"</h3>
+    <p class="body-text">NotebookLM의 핵심 강점입니다. 여러 문서를 동시에 업로드한 뒤 교차 분석 질문을 던지면 됩니다.</p>
+
+    <div class="prompt-block">여러 문서 비교 분석 질문 예시:
+
+"두 자료의 공통점과 차이점을 찾아줘"
+"이 5개 보고서에서 반복적으로 언급되는 키워드는?"
+"A 문서와 B 문서가 서로 상충되는 내용이 있나요?"
+"이 자료들 중 가장 낙관적인 전망을 담은 문서는 어느 것인가요?"</div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SECTION 05 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="s05">
+    <div class="section-num">section 05</div>
+    <h2 class="section-title">업무 활용법</h2>
+    <p class="section-sub">산업 리포트 인사이트 추출 · 1년치 회의록 · 경쟁사 비교 · 사내 Q&amp;A 봇</p>
+
+    <p class="body-text">패스트파이브 업무 맥락에서 NotebookLM을 바로 적용할 수 있는 4가지 시나리오입니다.</p>
+
+    <div class="feature-elements">
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">활용 01</div>
+          <div class="feature-el-name">산업 리포트<br>인사이트 추출</div>
+          <div class="feature-el-name-en">Market Research</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">공유오피스 시장 리포트, 업계 분석 자료를 여러 개 올린 뒤 우리 업무에 의미 있는 인사이트만 추려달라고 요청하세요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>예시 질문:</span> "경쟁사 대비 우리 포지션에 영향을 줄 트렌드를 이 5개 자료에서 정리해줘"
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">활용 02</div>
+          <div class="feature-el-name">1년치<br>회의록 분석</div>
+          <div class="feature-el-name-en">Meeting Archive</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">월별 팀 회의록을 전부 올리고, 반복해서 나오는 이슈나 미해결 항목을 찾아달라고 요청하세요. 패턴을 발견하는 데 탁월합니다.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>예시 질문:</span> "이 회의록들에서 반복해서 나온 이슈 TOP 5와 아직 해결되지 않은 항목을 알려줘"
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">활용 03</div>
+          <div class="feature-el-name">경쟁사 자료<br>비교 분석</div>
+          <div class="feature-el-name-en">Competitor Analysis</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">경쟁사 블로그 URL, 보도자료 PDF, 뉴스 기사 등을 올리고 우리 서비스와 다른 점, 벤치마킹할 포인트를 찾아달라고 요청하세요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>예시 질문:</span> "우리와 다른 점, 그리고 우리가 벤치마킹할 수 있는 포인트를 이 자료에서 정리해줘"
+          </p>
+        </div>
+      </div>
+
+      <div class="feature-el">
+        <div class="feature-el-left">
+          <div class="feature-el-num">활용 04</div>
+          <div class="feature-el-name">사내 Q&amp;A<br>봇 활용</div>
+          <div class="feature-el-name-en">Internal Q&amp;A</div>
+        </div>
+        <div class="feature-el-right">
+          <p class="feature-el-desc">사내 매뉴얼, 정책 문서, FAQ를 노트북에 업로드해두면 팀원들의 반복 문의에 문서 기반의 정확한 답변을 제공할 수 있어요.</p>
+          <p class="feature-el-example" style="margin-top:0.6rem;">
+            <span>효과:</span> HR 담당자에게 반복 문의가 줄고, 신규 입사자 온보딩 시간이 단축됩니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SECTION 06 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="s06">
+    <div class="section-num">section 06</div>
+    <h2 class="section-title">⚠️ 주의사항 &amp; 한계</h2>
+    <p class="section-sub">파일 제한 · 소스 개수 · 실시간 정보 없음 · 보안 · 한국어 한계 · 모바일</p>
+
+    <p class="body-text">NotebookLM을 업무에 적용하기 전에 반드시 알아둬야 할 한계와 주의사항입니다.</p>
+
+    <div class="warning">
+      <div class="warning-label">⚠️ 주의사항 전체 목록</div>
+      <ul class="warn-list">
+        <li>
+          <span class="w-icon">📦</span>
+          <div>
+            <strong>파일 용량 제한</strong>
+            파일 1개당 최대 200MB, 50만 단어 이내. 초과 시 일부 내용이 잘릴 수 있어요.
+          </div>
+        </li>
+        <li>
+          <span class="w-icon">🔢</span>
+          <div>
+            <strong>소스 개수 제한</strong>
+            무료 버전 기준 노트북당 최대 50개까지 업로드 가능합니다.
+          </div>
+        </li>
+        <li>
+          <span class="w-icon">🌐</span>
+          <div>
+            <strong>실시간 정보 없음</strong>
+            인터넷 검색 불가. 오늘 발표된 뉴스는 알 수 없어요. 업로드한 자료 안에서만 답변합니다.
+          </div>
+        </li>
+        <li>
+          <span class="w-icon">🔗</span>
+          <div>
+            <strong>노트북 간 공유 불가</strong>
+            노트북끼리 서로 참조할 수 없습니다. 주제별로 처음부터 분리해서 구성하세요.
+          </div>
+        </li>
+        <li>
+          <span class="w-icon">🔒</span>
+          <div>
+            <strong>보안 주의 ← 가장 중요!</strong>
+            고객 개인정보, 계약서, 미공개 내부 문서는 업로드 전 반드시 회사 보안 정책을 확인하세요. 자료가 Google 서버에 저장됩니다.
+          </div>
+        </li>
+        <li>
+          <span class="w-icon">🇰🇷</span>
+          <div>
+            <strong>한국어 뉘앙스 한계</strong>
+            미묘한 맥락, 업계 관용어, 줄임말 등은 결과를 반드시 검토하고 사용하세요.
+          </div>
+        </li>
+        <li>
+          <span class="w-icon">📱</span>
+          <div>
+            <strong>모바일 제한</strong>
+            기능 완성도를 위해 PC 브라우저 사용을 권장합니다.
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 Section 06 핵심 정리</div>
+      <ul class="point-list">
+        <li>보안 정책 확인 없이 민감한 문서를 업로드하지 마세요</li>
+        <li>최신 정보가 필요하면 NotebookLM이 아닌 Gemini를 사용하세요</li>
+        <li>노트북은 처음부터 주제별로 나눠서 만드는 것이 가장 중요</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════ -->
+  <!-- SECTION 07 -->
+  <!-- ════════════════════════════════ -->
+  <section class="section" id="s07">
+    <div class="section-num">section 07</div>
+    <h2 class="section-title">Gemini vs NotebookLM — 언제 뭘 써야 해?</h2>
+    <p class="section-sub">비교표로 용도 명확히 구분 · "이럴 땐 Gemini / 이럴 땐 NotebookLM" 판단 기준</p>
+
+    <p class="body-text">두 도구는 경쟁 관계가 아닙니다. 각각 잘하는 영역이 다르기 때문에 함께 쓰는 것이 가장 강력한 방법이에요.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>항목</th>
+          <th>Gemini</th>
+          <th>NotebookLM</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="label-col">답변 범위</td>
+          <td>인터넷 전체 학습 데이터</td>
+          <td class="go">내가 업로드한 자료만</td>
+        </tr>
+        <tr>
+          <td class="label-col">실시간 검색</td>
+          <td class="go">가능</td>
+          <td class="no">불가</td>
+        </tr>
+        <tr>
+          <td class="label-col">출처 자동 표기</td>
+          <td class="no">기본 없음</td>
+          <td class="go">자동 인용 표기</td>
+        </tr>
+        <tr>
+          <td class="label-col">할루시네이션</td>
+          <td>상대적으로 높음</td>
+          <td class="go">상대적으로 낮음</td>
+        </tr>
+        <tr>
+          <td class="label-col">여러 문서 비교</td>
+          <td class="no">제한적</td>
+          <td class="go">핵심 강점</td>
+        </tr>
+        <tr>
+          <td class="label-col">오디오 생성</td>
+          <td class="no">없음</td>
+          <td class="go">오디오 오버뷰</td>
+        </tr>
+        <tr>
+          <td class="label-col">창의적 글쓰기</td>
+          <td class="go">강점</td>
+          <td class="no">비적합</td>
+        </tr>
+        <tr>
+          <td class="label-col">최신 정보</td>
+          <td class="go">실시간 검색</td>
+          <td class="no">업로드 자료 기준</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="compare-pair">
+      <div class="compare-good" style="border-top-color: #c9a227; background: var(--accent-dim2);">
+        <div class="compare-tag" style="color: #7a5e0a;">Gemini를 쓸 때</div>
+        <div class="compare-prompt">
+          · 창의적인 글쓰기, 카피 작성<br>
+          · 최신 뉴스나 정보 검색이 필요할 때<br>
+          · 일반적인 Q&A, 번역, 요약<br>
+          · 코드 작성 및 디버깅<br>
+          · 아이디어 브레인스토밍
+        </div>
+      </div>
+      <div class="compare-good" style="border-top-color: var(--navy); background: var(--navy-dim);">
+        <div class="compare-tag" style="color: var(--navy);">NotebookLM을 쓸 때</div>
+        <div class="compare-prompt">
+          · 특정 문서 기반 분석이 필요할 때<br>
+          · 출처 근거가 필요한 답변이 필요할 때<br>
+          · 여러 문서를 교차 비교할 때<br>
+          · 사내 자료를 Q&A 형식으로 활용할 때<br>
+          · 리포트·회의록에서 인사이트 추출
+        </div>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <div class="analogy-label">💡 한 줄 판단 기준</div>
+      <p><strong>인터넷이 필요하면 Gemini, 내 문서가 기준이면 NotebookLM.</strong><br>Gemini는 "세상 모든 것을 아는 만능 동료", NotebookLM은 "내가 준 자료를 완벽히 읽은 전문 분석가"입니다. 가장 강력한 워크플로우는 Gemini로 최신 자료를 조사하고, 그 자료를 NotebookLM에 올려서 깊이 분석하는 것이에요.</p>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box-title">💡 Section 07 핵심 정리</div>
+      <ul class="point-list">
+        <li>두 도구는 경쟁이 아닌 <strong>분업 관계</strong>입니다</li>
+        <li>Gemini → 창의·검색·최신 정보 / NotebookLM → 내 자료 분석·비교·요약</li>
+        <li>최강 조합: Gemini로 최신 자료 조사 → NotebookLM에 올려서 깊이 분석</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 이번 주 미션 -->
+  <section class="section" style="margin-bottom:2rem;">
+    <div class="section-num">이번 주 미션</div>
+    <h2 class="section-title">오늘부터 이것만 하세요</h2>
+    <ul class="checklist">
+      <li><div class="check-box"></div>NotebookLM에 가입하고 노트북을 1개 만들어보기 (이름은 주제별로 구체적으로)</li>
+      <li><div class="check-box"></div>업무 관련 PDF나 URL을 2~3개 올리고 자동 요약 확인하기</li>
+      <li><div class="check-box"></div>오디오 오버뷰를 생성해서 출퇴근 시간에 들어보기</li>
+      <li><div class="check-box"></div>여러 문서 비교 질문을 던져보고 결과를 슬랙 #패파아카데미_ai기초 채널에 공유하기</li>
+    </ul>
+  </section>
+
+  <!-- 푸터 -->
+  <div class="doc-footer">
+    <div class="doc-footer-logo">FF <em>Academy</em> · 2026</div>
+    <div class="doc-footer-note">AI 활용 교육 · 4주차 학습자료 — NotebookLM 완전 정복</div>
+  </div>
+
+</div>
+
+<script>
+  const sections = ['s01','s02','s03','s04','s05','s06','s07'];
+
+  document.querySelectorAll('.toc-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.getAttribute('href').replace('#','');
+      const el = document.getElementById(id);
+      if (!el) return;
+      const barH = document.getElementById('toc-bar').offsetHeight;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - barH - 16;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  document.querySelectorAll('.section-toc-item').forEach(item => {
+    item.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.getAttribute('href').replace('#','');
+      const el = document.getElementById(id);
+      if (!el) return;
+      const barH = document.getElementById('toc-bar').offsetHeight;
+      const top = el.getBoundingClientRect().top + window.pageYOffset - barH - 16;
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+
+  function onScroll() {
+    const barH = document.getElementById('toc-bar').offsetHeight + 24;
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.getBoundingClientRect().top <= barH) current = id;
+    });
+    sections.forEach(id => {
+      const btn = document.getElementById('btn-' + id);
+      if (!btn) return;
+      btn.classList.toggle('active', id === current);
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+</body>
+</html>
